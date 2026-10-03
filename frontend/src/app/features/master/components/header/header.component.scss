@@ -1,0 +1,196 @@
+/* Header Component - Google-style navbar */
+
+.crm-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 16px;
+    background-color: var(--surface, #ffffff);
+    border-bottom: 1px solid var(--divider, #e8eaed);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Left section - Logo + Menu toggle */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text, #202124);
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.15s;
+
+    &:hover {
+        background-color: var(--hover-bg, #f1f3f4);
+        text-decoration: none;
+        color: var(--text, #202124);
+    }
+}
+
+.brand-icon {
+    font-size: 24px;
+    color: var(--primary, #1a73e8);
+}
+
+.brand-text {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.25px;
+}
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary, #5f6368);
+    cursor: pointer;
+    transition: background-color 0.15s;
+
+    &:hover {
+        background-color: var(--hover-bg, #f1f3f4);
+    }
+
+    i svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Right section - Theme + User */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-menu {
+    position: relative;
+}
+
+.user-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary, #5f6368);
+    cursor: pointer;
+    transition: background-color 0.15s;
+
+    &:hover {
+        background-color: var(--hover-bg, #f1f3f4);
+    }
+
+    &::after {
+        display: none; // Hide Bootstrap dropdown caret
+    }
+
+    i svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.user-dropdown {
+    min-width: 200px;
+    padding: 8px 0;
+    border: none;
+    border-radius: 8px;
+    box-shadow: var(--elevation-3, 0 4px 6px rgba(0, 0, 0, 0.1));
+    background-color: var(--surface, #ffffff);
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        font-size: 14px;
+        color: var(--text, #202124);
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--hover-bg, #f1f3f4);
+        }
+
+        i svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary, #5f6368);
+        }
+    }
+
+    .dropdown-divider {
+        margin: 8px 0;
+        border-color: var(--divider, #e8eaed);
+    }
+}
+
+/* Theme-specific adjustments */
+:host-context(.theme-dark) {
+    .crm-header {
+        background-color: var(--surface);
+        border-bottom-color: var(--divider);
+    }
+}
+
+:host-context(.theme-corporate) {
+    .brand-icon {
+        color: var(--primary);
+    }
+}
+
+:host-context(.theme-glass) {
+    .crm-header {
+        background: var(--surface);
+        backdrop-filter: var(--glass-blur, blur(16px));
+        -webkit-backdrop-filter: var(--glass-blur, blur(16px));
+        border-bottom: var(--glass-border, 1px solid rgba(255, 255, 255, 0.2));
+    }
+}
+
+:host-context(.theme-navy) {
+    .crm-header {
+        background-color: var(--sidebar-bg);
+        border-bottom-color: rgba(255, 255, 255, 0.05);
+
+        .brand-text,
+        .brand-icon {
+            color: #ffffff;
+        }
+
+        .brand:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .menu-toggle,
+        .user-btn {
+            color: rgba(255, 255, 255, 0.7);
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: #ffffff;
+            }
+        }
+    }
+}

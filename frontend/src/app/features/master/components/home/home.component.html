@@ -1,0 +1,14 @@
+<div class="main-layout">
+    <crm-header></crm-header>
+    <div class="main-content">
+        @if(!hideSidebarMenu()){
+        <div class="sidebar-container">
+            <crm-side-bar></crm-side-bar>
+        </div>
+        }
+        <div class="content-area">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <crm-footer></crm-footer>
+</div>

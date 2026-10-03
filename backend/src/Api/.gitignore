@@ -1,0 +1,6 @@
+# Log files
+Logs/
+App_Data/Logs/
+
+# Backup files
+App_Data/Backups/

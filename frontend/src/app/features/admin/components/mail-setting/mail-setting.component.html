@@ -1,0 +1,140 @@
+@if(dataStatus === dataStatusEnum.Fetching){
+<crm-loading></crm-loading>
+}
+
+@if(dataStatus === dataStatusEnum.DataAvailable){
+<div class="form-card">
+    <div class="form-section-header">
+        <h4 class="title">{{'MAIL_SETTING_HEADING'|translate}}</h4>
+        <p class="subtitle">Configure SMTP server, secure access, and sender credentials</p>
+    </div>
+
+    @if (detailForm) {
+    <form [formGroup]="detailForm" (ngSubmit)="onSubmit()" appFocusFirstInvalidField>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-field required">
+                    <label for="input-userName" class="form-label">{{'userName'|translate}}</label>
+                    <input id="input-userName" class="form-control" type="text" formControlName="userName"
+                        autocomplete="off" [ngClass]="{ 'is-invalid' : isInvalid(userName) }">
+                    @if(userName && isInvalid(userName)){
+                    <span class="form-error">
+                        @if(userName.errors?.['required']){
+                        {{'userName' | translate}} {{'FIELD_REQUIRED' | translate}}
+                        }
+                    </span>
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-field required">
+                    <label for="input-password" class="form-label">{{'password'|translate}}</label>
+                    <div class="input-group">
+                        <input id="input-password" class="form-control" type="{{ isShownPwd ? 'text' : 'password' }}"
+                            formControlName="password" autocomplete="off"
+                            [ngClass]="{ 'is-invalid' : isInvalid(password) }">
+                        <button
+                            class="btn btn-outline-secondary d-flex align-items-center bg-transparent border-start-0 text-secondary"
+                            style="border-color: var(--input-border);" type="button" (click)="isShownPwd = !isShownPwd">
+                            @if (isShownPwd) {
+                            <i class="crm-svg fs-6" [ngbTooltip]="'TOOLTIP_PWD_HIDE'|translate"
+                                crmSvgIcon="crm_eye_slash"></i>
+                            }
+                            @else{
+                            <i class="crm-svg fs-6" [ngbTooltip]="'TOOLTIP_PWD_SHOW'|translate" crmSvgIcon="crm_eye"></i>
+                            }
+                        </button>
+                    </div>
+                    @if(password && isInvalid(password)){
+                    <span class="form-error">
+                        @if(password.errors?.['required']){
+                        {{'password' | translate}} {{'FIELD_REQUIRED' | translate}}
+                        }
+                    </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-field required">
+                    <label for="input-serverAddress" class="form-label">{{'serverAddress'|translate}}</label>
+                    <input id="input-serverAddress" class="form-control" type="text" formControlName="serverAddress"
+                        autocomplete="off" [ngClass]="{ 'is-invalid' : isInvalid(serverAddress) }">
+                    @if(serverAddress && isInvalid(serverAddress)){
+                    <span class="form-error">
+                        @if(serverAddress.errors?.['required']){
+                        {{'serverAddress' | translate}} {{'FIELD_REQUIRED' | translate}}
+                        }
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-field required">
+                    <label for="input-serverPort" class="form-label">{{'serverPort'|translate}}</label>
+                    <input id="input-serverPort" class="form-control" type="text" formControlName="serverPort"
+                        autocomplete="off" [ngClass]="{ 'is-invalid' : isInvalid(serverPort) }">
+                    @if(serverPort && isInvalid(serverPort)){
+                    <span class="form-error">
+                        @if(serverPort.errors?.['required']){
+                        {{'serverPort' | translate}} {{'FIELD_REQUIRED' | translate}}
+                        }
+                        @if(serverPort.errors?.['pattern']){
+                        {{'serverPort' | translate}} {{'MUST_BE_NUMBER' | translate}}
+                        }
+                    </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-field required">
+                    <label for="input-fromEmail" class="form-label">{{'fromEmail'|translate}}</label>
+                    <input id="input-fromEmail" class="form-control" type="text" formControlName="fromEmail"
+                        autocomplete="off" [ngClass]="{ 'is-invalid' : isInvalid(fromEmail) }">
+                    @if(fromEmail && isInvalid(fromEmail)){
+                    <span class="form-error">
+                        @if(fromEmail.errors?.['required']){
+                        {{'fromEmail' | translate}} {{'FIELD_REQUIRED' | translate}}
+                        }
+                        @if(fromEmail.errors?.['pattern']){
+                        {{'FIELD_EMAIL_ERROR' | translate}}
+                        }
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-field mt-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="checkbox-isSSL" formControlName="isSSL">
+                        <label class="form-check-label" for="checkbox-isSSL">{{'isSSL'|translate}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"
+                [disabled]="!detailForm.dirty || submitted">{{'BUTTON_SUBMIT'|translate}}
+                @if (submitted){
+                <span class="spinner-border spinner-border-sm"></span>
+                }
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">{{'BUTTON_CANCEL'|translate}}
+            </button>
+        </div>
+    </form>
+    }
+</div>
+}
+
+@if(dataStatus === dataStatusEnum.Error){
+<crm-error-detail [errorDetail]="apiError"></crm-error-detail>
+}

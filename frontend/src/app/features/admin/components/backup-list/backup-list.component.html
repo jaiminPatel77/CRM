@@ -1,0 +1,74 @@
+<div class="container p-2">
+    @if(isLoading() || isCreatingBackup() || isRestoring()) {
+    <crm-loading></crm-loading>
+    }
+
+    @if(!isLoading() && !isCreatingBackup() && !isRestoring()) {
+    <div class="list-toolbar">
+        <h4 class="list-toolbar-title">
+            Database Backups
+        </h4>
+        <div class="list-toolbar-actions">
+            <!-- <button class="crm-svg" ngbTooltip="Create New Backup" (click)="createBackup()">
+                <i crmSvgIcon="crm_plus"></i>
+            </button> -->
+            @if(selectedFiles.size > 0) {
+            <button class="crm-svg danger" ngbTooltip="Delete Selected" (click)="deleteSelected()">
+                <i crmSvgIcon="crm_trash_alt"></i>
+            </button>
+            }
+            <button class="crm-svg" ngbTooltip="{{'TOOLTIP_REFRESH'|translate}}" (click)="refresh()">
+                <i crmSvgIcon="crm_reload"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="list-table-container">
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th style="width: 40px;">
+                        <input class="form-check-input" type="checkbox"
+                            [checked]="selectedFiles.size === backups.length && backups.length > 0"
+                            (change)="selectAll()">
+                    </th>
+                    <th>File Name</th>
+                    <th>Size</th>
+                    <th>Last Modified</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(backup of backups; track backup.name) {
+                <tr>
+                    <td>
+                        <input class="form-check-input" type="checkbox" [checked]="isSelected(backup)"
+                            (change)="toggleSelection(backup)">
+                    </td>
+                    <td>{{backup.name}}</td>
+                    <td>{{formatFileSize(backup.sizeBytes)}}</td>
+                    <td>{{backup.lastModified | date:'short'}}</td>
+                    <td>
+                        <button class="list-action-btn" ngbTooltip="Download" (click)="downloadBackup(backup)">
+                            <i crmSvgIcon="crm_download"></i>
+                        </button>
+                        <button class="list-action-btn" ngbTooltip="Restore Database" (click)="restoreBackup(backup)">
+                            <i crmSvgIcon="crm_undo"></i>
+                        </button>
+                        <button class="list-action-btn danger" ngbTooltip="Delete" (click)="deleteBackup(backup)">
+                            <i crmSvgIcon="crm_trash_alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td colspan="5">
+                        <div class="d-flex justify-content-center">{{'NO_RECORD_FOUND'|translate}}</div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
+</div>

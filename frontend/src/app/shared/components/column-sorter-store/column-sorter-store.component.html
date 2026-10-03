@@ -1,0 +1,9 @@
+<a (click)="sort()">
+    <ng-content></ng-content>
+    @if(isAsc){
+    <span>&uarr;</span>
+    }
+    @else if(isDesc){
+    <span>&darr;</span>
+    }
+</a>

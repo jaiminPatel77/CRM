@@ -1,0 +1,39 @@
+﻿<!doctype html>
+<html lang="en" width="100%" height="100%" style="width:100%;height:100%;">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <!--[if (mso)|(mso 16)]>
+    <style type="text/css">
+    body, table, td, a, span { font-family: 'Open Sans', sans-serif !important; }
+    a {text-decoration: none;}
+    </style>
+    <![endif]-->
+  </head>
+  <body bgcolor="#f4f4f4" width="100%" height="100%" style="width:100%;height:100%;background:#f4f4f4;margin:0px;padding:0px;font-family: 'Open Sans', sans-serif;">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" bgcolor="#ffffff" style="margin: 0px auto;background: #f4f4f4;">
+        <tr>
+            <td valign="middle" style="vertical-align: middle;text-align: center;padding: 100px 0px;">
+                <table cellpadding="0" cellspacing="0" border="0" width="600" bgcolor="#ffffff" style="text-align: left;margin: 0px auto 0px;background: #ffffff;box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);border-radius: 5px;-webkit-border-radius: 5px;-ms-border-radius: 5px;-moz-border-radius: 5px;">
+                    <!-- Header -->
+                    <tr>
+                        <td bgcolor="#4587f0" height="99px" style="height:99px;background: #4587f0;padding: 0px 40px;border-radius: 5px 5px 0px 0px;"><img src="cid:AppLogo" width="155.9px"></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 35px 40px;color: #181818;font-size: 15px;">
+                            <p style="margin:0px;color: #181818;font-size: 15px;">Hi <strong style="font-weight: bold;">${userFullName},</strong></p>
+                            <p style="height: 22px;margin:0px;">&nbsp;</p>
+                            <p style="margin:0px;color: #181818;font-size: 15px;">Authentication code for your <strong style="font-weight: bold;">${appTitle}</strong> account login is: <strong style="font-weight: bold;">${code}</strong> </p>
+                            <p style="height: 25x;margin:0px;">&nbsp;</p>                            
+                            <p style="margin:0px;color: #181818;font-size: 15px;">Let us know if you have any questions. <a href="mailto:${fromUserEmail}" style="color:#4587f0;text-decoration: none;">${fromUserEmail}</a></p>
+                            <p style="height: 35x;margin:0px;">&nbsp;</p>
+                            <p style="margin:0px;color: #909090;font-size: 15px;">Team ${appTitle}</p>
+                        </td>
+                    </tr>
+                </table> 
+            </td>
+        </tr>
+    </table>  
+  </body>
+</html>

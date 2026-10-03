@@ -1,0 +1,18 @@
+<div class="modal-header px-4 py-3 border-bottom border-light">
+    <div class="modal-heading">
+        <h4 class="modal-title m-0"
+            style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--text-primary);">
+            {{ model.titleTextId | translate }}
+        </h4>
+    </div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+</div>
+<div class="modal-body px-4 py-4">
+    <p class="m-0" style="color: var(--text-secondary); font-size: var(--font-size-base);">
+        {{ model.messageTextId | translate }}
+    </p>
+</div>
+<div class="modal-footer border-top border-light px-4 py-3 bg-surface justify-content-end">
+    <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">{{ model.cancelBtnTextId | translate }}</button>
+    <button type="button" class="btn btn-primary" (click)="onOk()">{{ model.okBtnTextId | translate }}</button>
+</div>

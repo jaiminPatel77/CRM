@@ -1,1 +1,121 @@
-/* You can add global styles to this file, and also import other style files */
+// =============================================================================
+// Main Stylesheet - Import Order Matters!
+// =============================================================================
+// 1. Design tokens (spacing, radius, typography, shadows)
+// 2. Theme definitions (Light, Dark, Blue color schemes)
+// 3. Bootstrap overrides (map tokens to Bootstrap vars)
+// 4. Custom utilities (8px grid classes)
+// 5. Third-party overrides
+// 6. App-specific global styles
+
+// Fonts (local Roboto)
+@use "./styles/fonts.scss";
+
+// Core design system
+@use "./styles/_tokens.scss";
+@use "./styles/themes.scss";
+@use "./styles/_bootstrap-overrides.scss";
+@use "./styles/_utilities.scss";
+
+// App-specific global component variants
+@use "./styles/_forms.scss"; // 4.5 Global form layout & controls
+@use "./styles/_common-list.scss";
+
+// Third-party component styles
+@import "../node_modules/@ng-select/ng-select/themes/default.theme.css";
+
+// =============================================================================
+// SVG Icon Utilities
+// =============================================================================
+
+@mixin svg($w, $h) {
+    width: $w;
+    height: $h;
+    cursor: pointer;
+}
+
+.crm-svg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-1, 4px);
+    border-radius: var(--radius-full, 50%);
+    color: inherit;
+    transition: background-color var(--transition-fast, 0.1s);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--hover-bg, #f1f3f4);
+    }
+
+    svg {
+        @include svg(1.25rem, 1.25rem);
+        width: 1.25rem;
+        height: 1.25rem;
+        display: block;
+    }
+}
+
+.crm-svg-sm {
+    padding: var(--space-1, 4px);
+
+    i svg {
+        @include svg(1rem, 1rem);
+    }
+}
+
+.crm-svg-lg {
+    padding: var(--space-2, 8px);
+
+    i svg {
+        @include svg(1.5rem, 1.5rem);
+    }
+}
+
+// =============================================================================
+// Global Layout Helpers
+// =============================================================================
+
+// Ensure smooth scrolling
+html {
+    scroll-behavior: smooth;
+}
+
+// Remove default margin
+body {
+    margin: 0;
+}
+
+// Scrollbar styling (optional, for Chrome/Edge)
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg, #ffffff);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--text-disabled, #9aa0a6);
+    border-radius: var(--radius-full, 9999px);
+
+    &:hover {
+        background: var(--text-secondary, #5f6368);
+    }
+}
+
+// Dark theme scrollbar
+.theme-dark {
+    ::-webkit-scrollbar-track {
+        background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--border);
+
+        &:hover {
+            background: var(--text-secondary);
+        }
+    }
+}

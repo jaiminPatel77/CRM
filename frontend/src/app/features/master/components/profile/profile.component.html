@@ -1,0 +1,83 @@
+@if(dataStatus === dataStatusEnum.Fetching){
+<crm-loading></crm-loading>
+}
+
+@if(dataStatus === dataStatusEnum.DataAvailable){
+<div class="form-card">
+    <div class="form-section-header">
+        <h4 class="title">{{'PROFILE_HEADING'|translate}}</h4>
+        <p class="subtitle">Manage your personal profile information</p>
+    </div>
+
+    @if (detailForm) {
+    <form [formGroup]="detailForm" (ngSubmit)="onSubmit()" appFocusFirstInvalidField>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-field required">
+                    <label for="input-email" class="form-label">{{'email'|translate}}</label>
+                    <input readonly id="input-email" class="form-control" type="text" formControlName="email"
+                        autocomplete="off" [ngClass]="{ 'is-invalid' : isInvalid(email) }">
+                    @if(email && isInvalid(email)){
+                    <span class="form-error">
+                        @if(email.errors?.['required']){
+                        {{'email' | translate}} {{'FIELD_REQUIRED' | translate}}
+                        }
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-field required">
+                    <label for="input-fullName" class="form-label">{{'fullName'|translate}}</label>
+                    <input id="input-fullName" class="form-control" type="text" formControlName="fullName"
+                        autocomplete="off" [ngClass]="{ 'is-invalid' : isInvalid(fullName) }">
+                    @if(fullName && isInvalid(fullName)){
+                    <span class="form-error">
+                        @if(fullName.errors?.['required']){
+                        {{'fullName' | translate}} {{'FIELD_REQUIRED' | translate}}
+                        }
+                    </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-field">
+                    <label for="input-phoneNumber" class="form-label">{{'phoneNumber'|translate}}</label>
+                    <input id="input-phoneNumber" class="form-control" type="text" formControlName="phoneNumber"
+                        autocomplete="off" [ngClass]="{ 'is-invalid' : isInvalid(phoneNumber) }">
+                    @if(phoneNumber && isInvalid(phoneNumber)){
+                    <span class="form-error">
+                        @if(phoneNumber.errors?.['required']){
+                        {{'phoneNumber' | translate}} {{'FIELD_REQUIRED' | translate}}
+                        }
+                        @if(phoneNumber.errors?.['pattern']){
+                        {{'PHONE_ERROR' | translate}}
+                        }
+                    </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"
+                [disabled]="!detailForm.dirty || submitted">{{'BUTTON_SUBMIT'|translate}}
+                @if (submitted){
+                <span class="spinner-border spinner-border-sm"></span>
+                }
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">{{'BUTTON_CANCEL'|translate}}
+            </button>
+        </div>
+    </form>
+    }
+</div>
+}
+
+@if(dataStatus === dataStatusEnum.Error){
+<crm-error-detail [errorDetail]="apiError"></crm-error-detail>
+}

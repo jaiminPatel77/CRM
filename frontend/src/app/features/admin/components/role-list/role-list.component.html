@@ -1,0 +1,129 @@
+<div class="container p-2">
+    @if(dataStatus === dataStatusEnum.Fetching){
+    <crm-loading></crm-loading>
+    }
+
+    @if(dataStatus === dataStatusEnum.DataAvailable){
+    <div class="list-toolbar">
+        <h4 class="list-toolbar-title">
+            {{'SIDE_BAR_ROLES'|translate}}
+        </h4>
+        <div class="list-toolbar-actions">
+            <div class="position-relative">
+                <input type="text" autocomplete="off" class="form-control form-control-sm" 
+                    [ngModel]="searchTxt()" (ngModelChange)="searchTxt.set($event); onSearch()"
+                    placeholder="Search name or description..." />
+            </div>
+            <button class="crm-svg" ngbTooltip="{{'TOOLTIP_ADD'|translate}}" (click)="gotoDetail()">
+                <i crmSvgIcon="crm_plus"></i>
+            </button>
+            <button class="crm-svg" ngbTooltip="{{'TOOLTIP_CLEAR_FILTER'|translate}}" (click)="onClearFilter()">
+                <i crmSvgIcon="crm_filter_line"></i>
+            </button>
+            <button class="crm-svg" ngbTooltip="{{'TOOLTIP_CLEAR_SORTING'|translate}}" (click)="onClearSorting()">
+                <i crmSvgIcon="crm_sort_amount_up_alt"></i>
+            </button>
+            <button class="crm-svg" ngbTooltip="{{'TOOLTIP_REFRESH'|translate}}" (click)="onRefresh()">
+                <i crmSvgIcon="crm_reload"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="list-table-container">
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th>
+                        @if(allowMultipleSelect){
+                        <input class="form-check-input" type="checkbox" id="checkbox-selectAll" [(ngModel)]="selectAll"
+                            (click)="onSelectDeselectAll()">
+                        }
+                    </th>
+                    <th>
+                        <app-column-sorter [field]="'name'" [orderBy]="sourceInfo.sortingState"
+                            (onSort)="onColumnSort($event)">
+                            {{'name'|translate}}
+                        </app-column-sorter>
+                    </th>
+                    <th>
+                        <app-column-sorter [field]="'description'" [orderBy]="sourceInfo.sortingState"
+                            (onSort)="onColumnSort($event)">
+                            {{'description'|translate}}
+                        </app-column-sorter>
+                    </th>
+                    <th>
+                        {{'COLUMN_ACTION'|translate}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(sourceInfo){
+                @if(sourceInfo.gridDataStatus === dataStatusEnum.Fetching){
+                <tr>
+                    <td colspan="4">
+                        <div class="d-flex justify-content-center">{{'LOADING'|translate}}</div>
+                    </td>
+                </tr>
+                }
+                @if(sourceInfo.gridDataStatus === dataStatusEnum.DataAvailable){
+                @for(record of sourceInfo.list; track $index)
+                {
+                <tr (click)="changeSelection(record)">
+                    <td>
+                        <input class="form-check-input" type="checkbox" id="checkbox-select-{{$index}}"
+                            [(ngModel)]="record.$selected">
+                    </td>
+                    <td>
+                        {{record.name}}
+                    </td>
+                    <td>
+                        {{record.description}}
+                    </td>
+                    <td>
+                        <button class="list-action-btn" ngbTooltip="{{'TOOLTIP_EDIT'|translate}}"
+                            (click)="gotoDetail(record)">
+                            <i crmSvgIcon="crm_pencil"></i>
+                        </button>
+                        <button class="list-action-btn danger" ngbTooltip="{{'TOOLTIP_DELETE'|translate}}"
+                            (click)="onDeleteClick(record)">
+                            <i crmSvgIcon="crm_trash_alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                }
+                @empty {
+                <tr>
+                    <td colspan="4">
+                        <div class="d-flex justify-content-center">{{'NO_RECORD_FOUND'|translate}}</div>
+                    </td>
+                </tr>
+                }
+                }
+                }
+                @else{
+                <tr>
+                    <td colspan="4">
+                        <div class="d-flex justify-content-center">{{'NO_RECORD_FOUND'|translate}}</div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if(sourceInfo.list.length){
+                <tr>
+                    <td colspan="4">
+                        <div class="d-flex flex-row justify-content-end">
+                            <ngb-pagination [collectionSize]="sourceInfo.pagination.totalRecords"
+                                [(page)]="sourceInfo.pagination.pageNo" [pageSize]="sourceInfo.pagination.pageSize"
+                                [maxSize]="5" (pageChange)="pageChanged()" [boundaryLinks]="false">
+                            </ngb-pagination>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+    }
+
+</div>

@@ -1,0 +1,23 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <ngb-alert [dismissible]="false" type="light">
+        <div class="text-center">
+            <a class="crm-svg-lg">
+                <i class="text-warning" crmSvgIcon="crm_warning"></i>
+            </a>
+            <h5 class="text-warning py-2">
+                @if(errorMsgDetail){
+                {{errorMsgDetail.statusCode}} :
+                }
+                {{errorTitle}}
+            </h5>
+        </div>
+        <div>
+            @if(errorMsgDetail && errorMsgDetail.errorDetail){
+            <p class="text-muted fw-semibold">
+                {{errorMsgDetail.errorDetail}}
+
+            </p>
+            }
+        </div>
+    </ngb-alert>
+</div>

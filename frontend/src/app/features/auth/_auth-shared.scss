@@ -1,0 +1,48 @@
+.auth-left-panel {
+    background-color: var(--sidebar-bg);
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            radial-gradient(circle at 15% 25%, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
+            radial-gradient(circle at 85% 75%, rgba(255, 255, 255, 0.03) 0%, transparent 40%);
+        pointer-events: none;
+    }
+}
+
+.auth-right-panel {
+    @media (min-width: 992px) {
+        width: 50% !important;
+    }
+}
+
+.auth-input,
+.auth-input-btn {
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+    transition: all var(--transition-base);
+}
+
+.auth-input:focus,
+.input-group:focus-within .auth-input,
+.input-group:focus-within .auth-input-btn {
+    border-color: var(--primary) !important;
+    box-shadow: none !important;
+}
+
+.input-group {
+    &:focus-within {
+        box-shadow: 0 0 0 3px var(--primary-light, rgba(0, 0, 0, 0.05)) !important;
+        border-radius: var(--radius-sm);
+    }
+}
+
+.auth-input:focus {
+    box-shadow: 0 0 0 3px var(--primary-light, rgba(0, 0, 0, 0.05)) !important;
+}

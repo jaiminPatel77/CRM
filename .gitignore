@@ -1,35 +1,182 @@
-# .NET / C#
+# =============================================================================
+# CRM - Multi-Tenant CRM SaaS Foundation (Angular 20 + ASP.NET Core + PostgreSQL)
+# =============================================================================
+
+# Scratch directory
+scratch/
+
+## =======================
+# Common
+# =======================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+.AppleDouble
+.LSOverride
+*~
+
+# =============================================================================
+# .NET / C# Backend
+# =============================================================================
+
+## Build Results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+out/
+
+## Visual Studio
 .vs/
-.vscode/
-.idea/
 *.user
+*.suo
 *.userosscache
 *.sln.docstates
+*.rsuser
 *.suo
-appsettings*.Development.json
-appsettings.Local.json
-*.Secret.json
 
-# Node / Angular
-node_modules/
-dist/
-.angular/
-.nx/
-coverage/
+## Rider
+.idea/
+
+## NuGet
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+*.props
+*.targets
+
+## Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+test_results*.txt
+
+## Code Analysis
+*.dotCover
+_Resharper*/
+*[Rr]esharper*
+*.cache
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
-# OS / Misc
-.DS_Store
-Thumbs.db
-*.tmp
-*.bak
+## MSBuild
+MSBuildBinlog/
+*.binlog
 
-# Docker
-docker-compose.override.yml
+##的成绩
+*.pubxml
+*.user
+*.userprefs
+*.csx.user
+
+## Entity Framework
+*.db
+*.db-journal
+*.mdf
+*.ldf
+
+##考试成绩 
+_TestResults/
+coverage/
+coverage.cobertura.xml
+coverage.opencover.xml
+
+##成绩单
+*.pdb
+
+##成绩
+TestResults/
+
+##的成绩 
+BenchmarkDotNet.Artifacts/
+
+##成绩 
+*.orig
+
+## Azure
+*.PublishSettings
+
+##的成绩
+appsettings.Development.json
+appsettings.Local.Development.json
+
+# =============================================================================
+# Angular / Node.js Frontend
+# =============================================================================
+
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+dist-ts/
+.angular/
+.sass-cache/
+
+# Angular Cache
+.angular/
+.tsbuildinfo/
+
+# IDE
+.idea/
+
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Build outputs
+*.tsbuildinfo
+
+# Local environment
+.env
+.env.local
+.env.*.local
+
+# Test results
+coverage/
+*.lcov
+nycrc.json
+
+# Playwright
+playwright-report/
+playwright/.cache/
+test-results/
+
+# Vitest
+vitest.config.*.timestamp-*
+
+# =============================================================================
+# Secrets & Credentials
+# =============================================================================
+*.pfx
+*.key
+*.pem
+*.crt
+*.cer
+*.p12
+*.store
+secret.json
+credentials.json
+*.local.yaml
+*.local.yml
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json

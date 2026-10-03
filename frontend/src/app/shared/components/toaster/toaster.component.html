@@ -1,0 +1,11 @@
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1200;">
+    @for (toast of toastService.toasts(); track toast) {
+    <ngb-toast [class]="toastClass(toast.type)" [autohide]="true" [delay]="toast.delay || 15000"
+        (hide)="toastService.remove(toast)">
+        <div class="d-flex justify-content-between align-items-center">
+            <span>{{ toast.message }}</span>
+            <button type="button" class="btn-close" (click)="toastService.remove(toast)" aria-label="Close"></button>
+        </div>
+    </ngb-toast>
+    }
+</div>

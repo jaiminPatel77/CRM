@@ -1,0 +1,216 @@
+// =============================================================================
+// Bootstrap Variable Overrides
+// =============================================================================
+// Maps our design tokens to Bootstrap's CSS variables for seamless integration
+
+@use 'tokens' as *;
+
+// =============================================================================
+// BOOTSTRAP CSS VARIABLE OVERRIDES
+// =============================================================================
+
+:root {
+    // Typography
+    --bs-body-font-family: var(--font-family-base);
+    --bs-body-font-size: var(--font-size-base);
+    --bs-body-line-height: var(--line-height-base);
+
+    // Border radius
+    --bs-border-radius: var(--radius-md);
+    --bs-border-radius-sm: var(--radius-sm);
+    --bs-border-radius-lg: var(--radius-lg);
+    --bs-border-radius-xl: var(--radius-xl);
+    --bs-border-radius-pill: var(--radius-full);
+
+    // Spacing (map to Bootstrap's spacer scale)
+    // Bootstrap uses 0.25rem increments; we override key values
+    --bs-gutter-x: var(--space-3);
+    --bs-gutter-y: var(--space-3);
+}
+
+// =============================================================================
+// COMPONENT-SPECIFIC OVERRIDES
+// =============================================================================
+
+// Cards
+.card {
+    --bs-card-spacer-y: var(--space-3);
+    --bs-card-spacer-x: var(--space-3);
+    --bs-card-border-radius: var(--radius-md);
+    --bs-card-border-color: var(--border);
+    --bs-card-bg: var(--surface);
+}
+
+// Buttons
+.btn {
+    --bs-btn-border-radius: var(--radius-sm);
+    --bs-btn-padding-x: var(--space-3);
+    --bs-btn-padding-y: var(--space-2);
+    --bs-btn-font-size: var(--font-size-base);
+    --bs-btn-font-weight: var(--font-weight-medium);
+}
+
+.btn-sm {
+    --bs-btn-padding-x: var(--space-2);
+    --bs-btn-padding-y: var(--space-1);
+    --bs-btn-font-size: var(--font-size-sm);
+}
+
+.btn-lg {
+    --bs-btn-padding-x: var(--space-4);
+    --bs-btn-padding-y: var(--space-2);
+    --bs-btn-font-size: var(--font-size-md);
+}
+
+// Form controls
+.form-control {
+    --bs-border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-2);
+    font-size: var(--font-size-base);
+    min-height: var(--input-height-md);
+}
+
+.form-control-sm {
+    padding: 6px var(--space-2);
+    font-size: var(--font-size-sm);
+    min-height: var(--input-height-sm);
+}
+
+.form-control-lg {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-md);
+    min-height: var(--input-height-lg);
+}
+
+// Form labels
+.form-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-2);
+    color: var(--text-secondary);
+}
+
+// Tables
+.table {
+    --bs-table-bg: var(--surface);
+    --bs-table-border-color: var(--divider);
+
+    >thead>tr>th {
+        padding: var(--space-2) var(--space-3);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        color: var(--text-secondary);
+    }
+
+    >tbody>tr>td {
+        padding: var(--space-2) var(--space-3);
+        font-size: var(--font-size-base);
+        vertical-align: middle;
+    }
+}
+
+// Modals
+.modal-content {
+    --bs-modal-border-radius: var(--radius-lg);
+    --bs-modal-padding: var(--space-4);
+}
+
+.modal-header {
+    padding: var(--space-3) var(--space-4);
+    border-bottom-color: var(--divider);
+}
+
+.modal-body {
+    padding: var(--space-3) var(--space-4);
+}
+
+.modal-footer {
+    padding: var(--space-3) var(--space-4);
+    border-top-color: var(--divider);
+    gap: var(--space-2);
+}
+
+// Dropdowns
+.dropdown-menu {
+    --bs-dropdown-border-radius: var(--radius-md);
+    --bs-dropdown-padding-y: var(--space-2);
+    --bs-dropdown-item-padding-y: var(--space-2);
+    --bs-dropdown-item-padding-x: var(--space-3);
+    box-shadow: var(--elevation-3);
+    border: none;
+}
+
+// Alerts
+.alert {
+    --bs-alert-padding-x: var(--space-3);
+    --bs-alert-padding-y: var(--space-2);
+    --bs-alert-border-radius: var(--radius-md);
+}
+
+// Badges
+.badge {
+    --bs-badge-padding-x: var(--space-2);
+    --bs-badge-padding-y: var(--space-1);
+    --bs-badge-border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+// Tooltips
+.tooltip {
+    font-size: var(--font-size-sm);
+}
+
+// Pagination
+.pagination {
+    --bs-pagination-color: var(--text-secondary);
+    --bs-pagination-bg: transparent;
+    --bs-pagination-border-width: 0;
+    --bs-pagination-hover-color: var(--text);
+    --bs-pagination-hover-bg: var(--hover-bg);
+    --bs-pagination-active-bg: var(--primary);
+    --bs-pagination-active-border-color: var(--primary);
+    --bs-pagination-disabled-color: var(--text-disabled);
+    --bs-pagination-disabled-bg: transparent;
+
+    gap: var(--space-1);
+
+    .page-link {
+        padding: var(--space-2) var(--space-2);
+        font-size: var(--font-size-sm);
+        border-radius: var(--radius-sm);
+        min-width: var(--button-height-sm);
+        text-align: center;
+        transition: all var(--transition-fast);
+
+        &:focus {
+            box-shadow: 0 0 0 0.25rem var(--focus-ring);
+            background-color: var(--hover-bg);
+        }
+    }
+}
+
+// Nav pills
+.nav-pills {
+    gap: var(--space-1);
+
+    .nav-link {
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-sm);
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-medium);
+    }
+}
+
+// Breadcrumbs
+.breadcrumb {
+    --bs-breadcrumb-padding-y: var(--space-2);
+    --bs-breadcrumb-margin-bottom: var(--space-3);
+    font-size: var(--font-size-sm);
+}
+
+// List groups
+.list-group-item {
+    padding: var(--space-2) var(--space-3);
+    border-color: var(--divider);
+}

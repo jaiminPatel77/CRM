@@ -1,0 +1,41 @@
+<header class="crm-header">
+    <div class="header-left">
+        <!-- Logo/Brand -->
+        <a class="brand" routerLink="/">
+            <span class="brand-icon">◆</span>
+            <span class="brand-text">{{'LOGO_TEXT' | translate}}</span>
+        </a>
+
+        <!-- Menu Toggle -->
+        <button class="menu-toggle" (click)="toggleSidebar()" [ngbTooltip]="'Toggle Menu'">
+            <i crmSvgIcon="crm_menu"></i>
+        </button>
+    </div>
+
+    <div class="header-right">
+        <!-- Theme Switcher -->
+        <crm-theme-switcher></crm-theme-switcher>
+
+        <!-- User Menu -->
+        <div class="user-menu" ngbDropdown placement="bottom-end">
+            <button class="user-btn" ngbDropdownToggle>
+                <i crmSvgIcon="crm_user_far"></i>
+            </button>
+            <div ngbDropdownMenu class="user-dropdown">
+                <a ngbDropdownItem (click)="goToUserProfile()">
+                    <i crmSvgIcon="crm_user_far"></i>
+                    <span>{{'PROFILE' | translate}}</span>
+                </a>
+                <a ngbDropdownItem (click)="goToChangePassword()">
+                    <i crmSvgIcon="crm_lock"></i>
+                    <span>{{'CHANGE_PASSWORD' | translate}}</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a ngbDropdownItem (click)="logout()">
+                    <i crmSvgIcon="crm_circle_notch"></i>
+                    <span>{{'BUTTON_LOGOUT' | translate}}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,193 @@
+# Crm: The Developer Bible
+
+Welcome to the **Crm** Developer Bible. This guide is your single source of truth for understanding the architecture, deep-dive mechanisms, and coding standards of this project.
+
+The solution is built on **.NET 10.0** utilizing a strict **Clean Architecture** combined with a **Vertical Slice** arrangement within the Application layer.
+
+---
+
+## 🏗️ 1. Architecture Flow & Project Connections
+
+The foundation of the project relies on **Dependency Inversion**; inner layers never depend on outer layers.
+
+*   `Crm.Domain`: The heart. **No dependencies**.
+*   `Crm.Application`: Depends purely on [Domain](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Domain/Common/BaseEntity.cs#14-18). Defines the "What" (Interfaces, Commands, Queries).
+*   `Crm.Infrastructure`: Depends on [Application](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Infrastructure/Persistence/ApplicationDbContext.cs#14-21). Defines the "How" (SQL Server, EF Core, Redis, Identity).
+*   `Crm.Api`: Depends on `Infrastructure` and [Application](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Infrastructure/Persistence/ApplicationDbContext.cs#14-21). Assembles the app, registers DI, and exposes HTTP Endpoints.
+
+**Dependency Injection at API Startup:**
+The API project's [Program.cs](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Api/Program.cs) registers layers by calling respective static extension methods:
+```csharp
+builder.Services.AddApplicationServices();      // From Application project (Registers MediatR, FluentValidation)
+builder.Services.AddInfrastructureServices(...); // From Infrastructure project (Registers EF, Identity, Hangfire)
+```
+
+---
+
+## 🧬 2. Domain Entities & Patterns
+
+The Domain project holds the core blueprints. All custom entities must inherit from foundational base classes to ensure consistency, specifically around ID generation and auditing.
+
+### **Base Classes**
+*   [BaseEntity](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Domain/Common/BaseEntity.cs#6-19): Provides a standard `long Id` and a `NotMapped` list for `DomainEvents` (useful for publishing domain-driven events later).
+*   [AuditableEntity](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Domain/Common/AuditableEntity.cs#3-10): Inherits from [BaseEntity](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Domain/Common/BaseEntity.cs#6-19) and adds `CreatedOn`, `CreatedById`, `ModifiedOn`, and `ModifiedById`.
+
+### **Entity Creation Standard:**
+**Rule:** When creating a new entity, inherit from [AuditableEntity](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Domain/Common/AuditableEntity.cs#3-10). 
+```csharp
+[Auditable] // Optional metadata attribute
+public class Customer : AuditableEntity
+{
+    [Required]
+    [MaxLength(200)]
+    public string Name { get; set; } = string.Empty;
+}
+```
+
+*Note on Users:* The [User](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Domain/Entities/User.cs#9-53) class inherits from `IdentityUser<long>`, but manually replicates the `IAuditableEntity` properties since C# lacks multiple inheritance.
+
+---
+
+## ⚙️ 3. The Details: CRUD APIs via CQRS & MediatR
+
+We heavily utilize the **CQRS** (Command Query Responsibility Segregation) pattern, mediated by **MediatR**. To avoid writing repetitive CRUD code, the Application layer provides powerful generic base features.
+
+### **Vertical Slicing**
+Instead of folders for `Commands`, `Queries`, `Validators`, we group by feature (e.g., `/Features/Customer/`). One file (`CustomerFeatures.cs`) holds:
+1. All DTOs
+2. All Queries (Get, List, Lookup) + their Handlers
+3. All Commands (Create, Update, Delete) + their Validators + their Handlers
+
+### **The CRUD Flow (How it works under the hood)**
+1. **API Controller:** Your controller inherits from [ApiGenericControllerBase](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Api/Controllers/ApiGenericControllerBase.cs#10-61). It exposes standard REST endpoints (`[HttpGet]`, `[HttpPost]`, etc.). It automatically routes incoming HTTP requests into MediatR queries/commands.
+2. **MediatR Pipeline:** MediatR wraps the request in a pipeline.
+   - *Validation:* [ValidationBehaviour](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Common/Behaviors/ValidationBehaviour.cs#12-16) automatically runs FluentValidation rules. If it fails, an exception is thrown.
+3. **Handler:** A base handler ([BaseCreateCommandHandler](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Common/Features/GenericBaseFeatures.cs#90-91), [BaseGetQueryHandler](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Common/Features/GenericBaseFeatures.cs#12-31)) takes over. It accesses `IApplicationDbContext` directly, maps generic types using the abstract methods you provide, and saves to the database.
+
+### **Creating a New Feature (The "Pro Tip" Workflow)**
+To build a fully functional CRUD API for a new entity called `Customer`:
+1.  **Domain:** Create `Customer.cs` -> add to [ApplicationDbContext.cs](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Infrastructure/Persistence/ApplicationDbContext.cs) -> create EF migration.
+2.  **Application:** Copy an existing feature file (like [ProjectFeatures.cs](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Features/Projects/ProjectFeatures.cs)). Rename it to `CustomerFeatures.cs`.
+3.  **Refactor Features:** Change all instances of [Project](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Domain/Entities/Project.cs#5-14) -> `Customer`. Set up the [MapToDto](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Features/Projects/ProjectFeatures.cs#53-59) and [MapToEntity](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Features/Projects/ProjectFeatures.cs#121-125) abstract method overrides with your new properties.
+4.  **API:** Create `CustomersController.cs` inheriting from [ApiGenericControllerBase](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Api/Controllers/ApiGenericControllerBase.cs#10-61). Pass in your specific MediatR commands/queries as generic type arguments.
+*(Done! You now have a paginated, validated, fully RESTful endpoint).*
+
+### **Pagination & Filtering ([Gridify](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Common/Features/GenericBaseFeatures.cs#68-82))**
+Pagination and dynamic querying are handled out-of-the-box by the **Gridify** library using [BaseListQueryHandler](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Common/Features/GenericBaseFeatures.cs#38-39).
+*   API Request Example: `GET /api/v1/Projects?page=1&pageSize=10&filter=name=*Alpha*&orderBy=priority desc`
+*   The [BaseListQueryHandler](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Common/Features/GenericBaseFeatures.cs#38-39) automatically translates this string filter into an EF Core `IQueryable` SQL query.
+
+---
+
+## 🛡️ 4. Middlewares & Cross-Cutting Concerns
+
+### **Global Exception Handling**
+Do not use `try/catch` blocks in controllers or handlers for standard flow.
+The [ExceptionHandlingMiddleware](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Api/Middleware/ExceptionHandlingMiddleware.cs#18-23) intercepts everything:
+*   [ValidationException](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Api/Middleware/ExceptionHandlingMiddleware.cs#57-69) (from FluentValidation) -> Translated to standard HTTP 400 with a custom `ApiBadRequestResponse`.
+*   [NotFoundException](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Api/Middleware/ExceptionHandlingMiddleware.cs#70-82) -> Translated to HTTP 404.
+*   `Unhandled Exceptions` -> Translated to HTTP 500, preventing stack traces from leaking to clients in production.
+
+---
+
+## 📝 5. Coding Standards & Conventions
+
+To ensure the codebase remains pristine, adhere strictly to the following rules:
+
+1.  **No Logic in Controllers:** Controllers must essentially only contain `return await Mediator.Send(command);` or rely completely on [ApiGenericControllerBase](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Api/Controllers/ApiGenericControllerBase.cs#10-61).
+2.  **Use `Result<T>` Wrappers:** Every Application handler must return `Result<T>` type, ensuring standardized response shapes and allowing for explicit success/failure states.
+3.  **Strict Nullability:** `#nullable enable` is turned on solution-wide. Address warnings explicitly. Use `= string.Empty;` for non-nullable strings instead of leaving them arbitrarily null.
+4.  **FluentValidation Required:** Do not rely purely on Data Annotations on the Command DTOs. Implement an `AbstractValidator<TCommand>` for every command that mutates data.
+5.  **Always use `virtual` on EF Core navigational properties** allowing EF Core to utilize lazy loading / proxy generation if configured.
+6.  **Base Features:** Always inherit from [BaseCreateCommandHandler](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Common/Features/GenericBaseFeatures.cs#90-91), [BaseUpdateCommandHandler](file:///d:/Projects/Saay/SaayAI/Crm8-sql/Crm/src/Crm.Application/Common/Features/GenericBaseFeatures.cs#104-123), etc., instead of writing raw `IRequestHandler` contexts, unless the logic is wildly custom.
+
+---
+
+*This document is a living manual. When introducing large paradigm shifts or new architectural patterns, update this guide.*
+
+---
+
+## 🚀 Appendix: End-to-End Entity Creation Workflow
+
+When you need to add a brand new entity (e.g., `Customer`) and expose complete CRUD APIs, follow this exact step-by-step workflow. This guarantees Clean Architecture compliance and zero boilerplate REST controller logic.
+
+### Step 1: Create the Domain Entity
+1. **Location:** `src\Crm.Domain\Entities\`
+2. **Action:** Create `Customer.cs`. Inherit from `AuditableEntity`.
+```csharp
+using Crm.Domain.Common;
+
+namespace Crm.Domain.Entities;
+
+public class Customer : AuditableEntity
+{
+    public string Name { get; set; } = string.Empty;
+    public string? Email { get; set; }
+}
+```
+
+### Step 2: Register in EF Core DbContext
+1. **Location:** `src\Crm.Infrastructure\Persistence\ApplicationDbContext.cs`
+2. **Action:** Add the `DbSet`.
+```csharp
+public DbSet<Customer> Customers { get; set; } = null!;
+```
+3. **Action (CLI):** Generate and apply the migration.
+```shell
+dotnet ef migrations add AddCustomerEntity --project src\Crm.Infrastructure --startup-project src\Crm.Api
+dotnet ef database update --project src\Crm.Infrastructure --startup-project src\Crm.Api
+```
+
+### Step 3: Create the Application Features (CQRS)
+1. **Location:** `src\Crm.Application\Features\Customers\`
+2. **Action:** Create `CustomerFeatures.cs`. *Pro Tip: Copy `ProjectFeatures.cs` and rename `Project` to `Customer`.*
+3. **Contents:**
+    - **DTOs:** Define `CustomerDto` (inheriting `BaseAuditableDto<long>`) and `CustomerLookupDto`.
+    - **Get & List Queries:** 
+      - `GetCustomerQueryHandler`: override `MapToDto` and (optionally) `GetQueryable` if you need `.Include()`.
+      - `GetCustomersWithPaginationQueryHandler`: override `MapToDto`.
+      - `GetCustomersLookupQueryHandler`: implement custom handler returning `Paging<CustomerLookupDto>`.
+    - **Create/Update Commands:**
+      - Define `CreateCustomerCommand` and `UpdateCustomerCommand` with properties.
+      - **Crucial:** Define FluentValidation classes (`CreateCustomerCommandValidator`).
+      - Handlers: override `MapToEntity`.
+    - **Delete Command:**
+      - `DeleteCustomerCommandHandler`: inherits `BaseDeleteCommandHandler<Customer, DeleteCustomerCommand>`.
+
+*(For full syntax, refer to the `ProjectFeatures.cs` file).*
+
+### Step 4: Expose the API Controller
+1. **Location:** `src\Crm.Api\Controllers\`
+2. **Action:** Create `CustomersController.cs`. Inherit from `ApiGenericControllerBase` and pass in the MediatR classes you just created.
+```csharp
+using Crm.Application.Common.Models;
+using Crm.Application.Features.Customers;
+using Gridify;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Crm.Api.Controllers;
+
+[Authorize]
+[ApiController] // Required for strict architectural checks
+public class CustomersController : ApiGenericControllerBase<
+    CreateCustomerCommand, 
+    UpdateCustomerCommand, 
+    DeleteCustomerCommand, 
+    GetCustomerQuery, 
+    GetCustomersWithPaginationQuery, 
+    CustomerDto>
+{
+    // The base class automatically provides GET {id}, GET (List), POST, PUT {id}, and DELETE {id}.
+
+    // Add your custom logic or lookups manually:
+    [HttpGet("lookup-list")]
+    [ProducesResponseType(typeof(Result<Paging<CustomerLookupDto>>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<Result<Paging<CustomerLookupDto>>>> GetLookupList([FromQuery] GetCustomersLookupQuery query)
+    {
+        return await Mediator.Send(query);
+    }
+}
+```
+
+**Result:** You now fully documented, validated, paginated CRUD APIs accessible via swagger/scalar at `/api/v1/Customers` without having written any redundant repetitive DB saving logic in your controller!

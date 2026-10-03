@@ -1,0 +1,72 @@
+<div class="container p-2">
+    @if(isLoading()) {
+    <crm-loading></crm-loading>
+    }
+
+    @if(!isLoading()) {
+    <div class="list-toolbar">
+        <h4 class="list-toolbar-title">
+            Audit Logs
+        </h4>
+        <div class="list-toolbar-actions">
+            <div class="position-relative">
+                <input type="text" autocomplete="off" class="form-control form-control-sm" [(ngModel)]="searchFilter"
+                    (ngModelChange)="onSearch()" placeholder="Search..." />
+            </div>
+            <button class="crm-svg" ngbTooltip="Clear Filter" (click)="clearFilter()">
+                <i crmSvgIcon="crm_filter_line"></i>
+            </button>
+            <button class="crm-svg" ngbTooltip="{{'TOOLTIP_REFRESH'|translate}}" (click)="refresh()">
+                <i crmSvgIcon="crm_reload"></i>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="list-table-container">
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th>Date/Time</th>
+                    <th>User ID</th>
+                    <th>Type</th>
+                    <th>Table Name</th>
+                    <th>Primary Key</th>
+                    <th>Changes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(log of auditLogs; track log.id) {
+                <tr>
+                    <td>{{log.dateTime | date:'short'}}</td>
+                    <td>{{log.userId || '-'}}</td>
+                    <td>{{log.type}}</td>
+                    <td>{{log.tableName}}</td>
+                    <td>{{log.primaryKey}}</td>
+                    <td>{{log.affectedColumns || '-'}}</td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td colspan="6">
+                        <div class="d-flex justify-content-center">{{'NO_RECORD_FOUND'|translate}}</div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                @if(auditLogs.length > 0) {
+                <tr>
+                    <td colspan="6">
+                        <div class="d-flex flex-row justify-content-end">
+                            <ngb-pagination [collectionSize]="totalRecords" [(page)]="page" [pageSize]="pageSize"
+                                [maxSize]="5" (pageChange)="onPageChange()" [boundaryLinks]="false">
+                            </ngb-pagination>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tfoot>
+        </table>
+    </div>
+    }
+</div>

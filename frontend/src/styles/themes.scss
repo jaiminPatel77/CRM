@@ -1,0 +1,1229 @@
+// =============================================================================
+// Theme Definitions - Light, Dark, Blue
+// =============================================================================
+// Each theme defines color tokens that are consumed by components via CSS vars
+
+@use 'tokens' as *;
+
+// =============================================================================
+// COLOR PALETTE DEFINITIONS
+// =============================================================================
+
+// Google Material Colors
+$google-blue: #1a73e8;
+$google-blue-rgb: 26, 115, 232;
+$google-blue-hover: #1765cc;
+$google-blue-active: #1557b0;
+$google-blue-light: #e8f0fe;
+
+$google-teal: #00bcd4;
+$google-teal-rgb: 0, 188, 212;
+$google-teal-hover: #00acc1;
+$google-teal-light: #e0f7fa;
+
+$google-red: #d93025;
+$google-green: #1e8e3e;
+$google-yellow: #f9ab00;
+
+// Grey scale
+$grey-50: #f8f9fa;
+$grey-100: #f1f3f4;
+$grey-200: #e8eaed;
+$grey-300: #dadce0;
+$grey-400: #bdc1c6;
+$grey-500: #9aa0a6;
+$grey-600: #80868b;
+$grey-700: #5f6368;
+$grey-800: #3c4043;
+$grey-900: #202124;
+
+// Dark mode colors
+$dark-bg: #1f1f1f;
+$dark-surface: #292929;
+$dark-surface-elevated: #333333;
+$dark-border: #444444;
+$dark-divider: #3c3c3c;
+$dark-blue: #8ab4f8;
+$dark-blue-rgb: 138, 180, 248;
+$dark-blue-light: rgba(138, 180, 248, 0.15);
+
+// =============================================================================
+// LIGHT THEME (Default)
+// =============================================================================
+
+:root,
+.theme-light {
+    // Background & Surfaces
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-elevated: #ffffff;
+
+    // Text
+    --text: #{$grey-900};
+    --text-secondary: #{$grey-700};
+    --text-disabled: #{$grey-500};
+
+    // Borders & Dividers
+    --border: #{$grey-300};
+    --divider: #{$grey-200};
+    // Backward-compatible aliases
+    --border-color: var(--border);
+    --divider-color: var(--divider);
+    --surface-color: var(--surface);
+    --text-color: var(--text);
+    --bg-color: var(--bg);
+
+    --primary: #{$google-blue};
+    --primary-rgb: #{$google-blue-rgb};
+    --primary-hover: #{$google-blue-hover};
+    --primary-active: #{$google-blue-active};
+    --primary-light: #{$google-blue-light};
+
+    // Semantic colors
+    --success: #{$google-green};
+    --danger: #{$google-red};
+    --warning: #{$google-yellow};
+
+    // Interactive states
+    --hover-bg: #{$grey-100};
+    --focus-ring: rgba(26, 115, 232, 0.4);
+
+    // Elevations
+    --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --elevation-2: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+    --elevation-3: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --elevation-4: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+
+    // Sidebar
+    --sidebar-bg: #ffffff;
+    --sidebar-border: #{$grey-200};
+    --sidebar-hover: #{$grey-100};
+    --sidebar-active-bg: #{$google-blue-light};
+    --sidebar-active-text: #{$google-blue};
+
+    // Input
+    --input-bg: #ffffff;
+    --input-border: #{$grey-300};
+    --input-focus-border: #{$google-blue};
+
+    // Bootstrap overrides
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--text);
+    --bs-primary: var(--primary);
+    --bs-primary-rgb: var(--primary-rgb);
+    --bs-border-color: var(--border);
+    --bs-secondary-color: var(--text-secondary);
+}
+
+// =============================================================================
+// DARK THEME
+// =============================================================================
+
+.theme-dark {
+    // Background & Surfaces
+    --bg: #{$dark-bg};
+    --surface: #{$dark-surface};
+    --surface-elevated: #{$dark-surface-elevated};
+
+    // Text
+    --text: #e8eaed;
+    --text-secondary: #{$grey-500};
+    --text-disabled: #{$grey-700};
+
+    // Borders & Dividers
+    --border: #{$dark-border};
+    --divider: #{$dark-divider};
+    --border-color: var(--border);
+    --divider-color: var(--divider);
+    --surface-color: var(--surface);
+    --text-color: var(--text);
+    --bg-color: var(--bg);
+    --primary: #{$dark-blue};
+    --primary-rgb: #{$dark-blue-rgb};
+    --primary-hover: #aecbfa;
+    --primary-active: #c6dbfc;
+    --primary-light: #{$dark-blue-light};
+
+    // Semantic colors (adjusted for dark)
+    --success: #81c995;
+    --danger: #f28b82;
+    --warning: #fdd663;
+
+    // Interactive states
+    --hover-bg: #3c3c3c;
+    --focus-ring: rgba(138, 180, 248, 0.4);
+
+    // Elevations (subtle in dark mode, rely on surface color)
+    --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --elevation-2: 0 2px 4px rgba(0, 0, 0, 0.4);
+    --elevation-3: 0 4px 8px rgba(0, 0, 0, 0.5);
+    --elevation-4: 0 8px 16px rgba(0, 0, 0, 0.6);
+
+    // Sidebar
+    --sidebar-bg: #{$dark-bg};
+    --sidebar-border: #{$dark-divider};
+    --sidebar-hover: #3c3c3c;
+    --sidebar-active-bg: #{$dark-blue-light};
+    --sidebar-active-text: #{$dark-blue};
+
+    // Input
+    --input-bg: #{$dark-surface};
+    --input-border: #{$dark-border};
+    --input-focus-border: #{$dark-blue};
+
+    // Bootstrap overrides
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--text);
+    --bs-primary: var(--primary);
+    --bs-primary-rgb: var(--primary-rgb);
+    --bs-border-color: var(--border);
+    --bs-secondary-color: var(--text-secondary);
+}
+
+// =============================================================================
+// BLUE THEME (Teal/Cyan Accent)
+// =============================================================================
+
+.theme-blue {
+    // Background & Surfaces (white base with teal accents)
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-elevated: #ffffff;
+
+    // Text
+    --text: #{$grey-900};
+    --text-secondary: #{$grey-700};
+    --text-disabled: #{$grey-500};
+
+    // Borders & Dividers (teal tinted)
+    --border: #b2ebf2;
+    --divider: #e0f7fa;
+    --border-color: var(--border);
+    --divider-color: var(--divider);
+    --surface-color: var(--surface);
+    --text-color: var(--text);
+    --bg-color: var(--bg);
+
+    --primary: #{$google-teal};
+    --primary-rgb: #{$google-teal-rgb};
+    --primary-hover: #{$google-teal-hover};
+    --primary-active: #0097a7;
+    --primary-light: #{$google-teal-light};
+
+    // Semantic colors
+    --success: #{$google-green};
+    --danger: #{$google-red};
+    --warning: #{$google-yellow};
+
+    // Interactive states
+    --hover-bg: #{$google-teal-light};
+    --focus-ring: rgba(0, 188, 212, 0.4);
+
+    // Elevations
+    --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --elevation-2: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+    --elevation-3: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --elevation-4: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+
+    // Sidebar
+    --sidebar-bg: #ffffff;
+    --sidebar-border: #b2ebf2;
+    --sidebar-hover: #{$google-teal-light};
+    --sidebar-active-bg: #{$google-teal-light};
+    --sidebar-active-text: #00838f;
+
+    // Input
+    --input-bg: #ffffff;
+    --input-border: #b2ebf2;
+    --input-focus-border: #{$google-teal};
+
+    // Bootstrap overrides
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--text);
+    --bs-primary: var(--primary);
+    --bs-primary-rgb: var(--primary-rgb);
+    --bs-border-color: var(--border);
+    --bs-secondary-color: var(--text-secondary);
+}
+
+// =============================================================================
+// GLASSMORPHISM THEME 🔮
+// =============================================================================
+// Frosted glass effect with dark text on translucent surfaces
+
+.theme-glass {
+    // Background - solid purple gradient base
+    --bg: #6366f1;
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --surface: rgba(255, 255, 255, 0.85);
+    --surface-elevated: rgba(255, 255, 255, 0.95);
+
+    // Text (dark on light glass - using greys for readability)
+    --text: #1f2937;
+    --text-secondary: #6b7280;
+    --text-disabled: #9ca3af;
+
+    // Borders (purple tinted)
+    --border: rgba(99, 102, 241, 0.3);
+    --divider: rgba(99, 102, 241, 0.15);
+    --border-color: var(--border);
+    --divider-color: var(--divider);
+    --surface-color: var(--surface);
+    --text-color: var(--text);
+    --bg-color: var(--bg);
+
+    // Primary (vibrant purple)
+    --primary: #7c3aed;
+    --primary-rgb: 124, 58, 237;
+    --primary-hover: #6d28d9;
+    --primary-active: #5b21b6;
+    --primary-light: rgba(124, 58, 237, 0.15);
+
+    // Semantic colors
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+
+    // Interactive states
+    --hover-bg: rgba(99, 102, 241, 0.1);
+    --focus-ring: rgba(124, 58, 237, 0.5);
+
+    // Glass elevations
+    --elevation-1: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --elevation-2: 0 8px 25px rgba(99, 102, 241, 0.15);
+    --elevation-3: 0 16px 40px rgba(99, 102, 241, 0.2);
+    --elevation-4: 0 24px 50px rgba(99, 102, 241, 0.25);
+
+    // Glass effect
+    --glass-blur: blur(20px);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+
+    // Sidebar (frosted glass)
+    --sidebar-bg: rgba(255, 255, 255, 0.9);
+    --sidebar-border: rgba(99, 102, 241, 0.2);
+    --sidebar-hover: rgba(99, 102, 241, 0.1);
+    --sidebar-active-bg: rgba(124, 58, 237, 0.15);
+    --sidebar-active-text: #7c3aed;
+
+    // Input
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --input-border: rgba(99, 102, 241, 0.3);
+    --input-focus-border: #7c3aed;
+
+    // Bootstrap overrides
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--text);
+    --bs-primary: var(--primary);
+    --bs-border-color: var(--border);
+}
+
+
+// =============================================================================
+// BOLD / VIBRANT THEME 🎨
+// =============================================================================
+// Bright gradients, large radius, playful animations
+
+.theme-bold {
+    // Background
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --surface-elevated: #ffffff;
+
+    // Text
+    --text: #1a1a2e;
+    --text-secondary: #4a4a68;
+    --text-disabled: #9090a7;
+
+    // Borders
+    --border: #e5e5f0;
+    --divider: #f0f0f8;
+    --border-color: var(--border);
+    --divider-color: var(--divider);
+    --surface-color: var(--surface);
+    --text-color: var(--text);
+    --bg-color: var(--bg);
+
+    --primary: #8b5cf6;
+    --primary-rgb: 139, 92, 246;
+    --primary-hover: #7c3aed;
+    --primary-active: #6d28d9;
+    --primary-light: #ede9fe;
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+
+    // Semantic colors (vibrant)
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+
+    // Interactive states
+    --hover-bg: #f5f3ff;
+    --focus-ring: rgba(139, 92, 246, 0.5);
+
+    // Bold elevations (deeper shadows)
+    --elevation-1: 0 4px 6px rgba(139, 92, 246, 0.1);
+    --elevation-2: 0 10px 25px rgba(139, 92, 246, 0.15);
+    --elevation-3: 0 20px 40px rgba(139, 92, 246, 0.2);
+    --elevation-4: 0 30px 60px rgba(139, 92, 246, 0.25);
+
+    // Large radius
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+
+    // Sidebar
+    --sidebar-bg: #ffffff;
+    --sidebar-border: #e5e5f0;
+    --sidebar-hover: #f5f3ff;
+    --sidebar-active-bg: #ede9fe;
+    --sidebar-active-text: #7c3aed;
+
+    // Input
+    --input-bg: #ffffff;
+    --input-border: #e5e5f0;
+    --input-focus-border: #8b5cf6;
+
+    // Bootstrap overrides
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--text);
+    --bs-primary: var(--primary);
+    --bs-border-color: var(--border);
+}
+
+// =============================================================================
+// NEUMORPHISM / SOFT UI THEME ☁️
+// =============================================================================
+// Soft, embossed/debossed effects with muted colors
+
+.theme-soft {
+    // Background (soft grey)
+    --bg: #e0e5ec;
+    --surface: #e0e5ec;
+    --surface-elevated: #e0e5ec;
+
+    // Text
+    --text: #3d4856;
+    --text-secondary: #6b7785;
+    --text-disabled: #9aa5b1;
+
+    // Borders (hidden, rely on shadows)
+    --border: transparent;
+    --divider: rgba(0, 0, 0, 0.05);
+    --border-color: var(--border);
+    --divider-color: var(--divider);
+    --surface-color: var(--surface);
+    --text-color: var(--text);
+    --bg-color: var(--bg);
+    --primary: #6366f1;
+    --primary-rgb: 99, 102, 241;
+    --primary-hover: #4f46e5;
+    --primary-active: #4338ca;
+    --primary-light: rgba(99, 102, 241, 0.15);
+
+    // Semantic colors
+    --success: #34d399;
+    --danger: #f87171;
+    --warning: #fbbf24;
+
+    // Interactive states
+    --hover-bg: #d4d9e1;
+    --focus-ring: rgba(99, 102, 241, 0.4);
+
+    // Neumorphic shadows (embossed effect)
+    --neu-shadow-outer: 8px 8px 16px #a3b1c6, -8px -8px 16px #ffffff;
+    --neu-shadow-inner: inset 4px 4px 8px #a3b1c6, inset -4px -4px 8px #ffffff;
+    --neu-shadow-pressed: inset 4px 4px 12px #a3b1c6, inset -4px -4px 12px #ffffff;
+
+    // Standard elevations mapped to neu
+    --elevation-1: var(--neu-shadow-outer);
+    --elevation-2: var(--neu-shadow-outer);
+    --elevation-3: var(--neu-shadow-outer);
+    --elevation-4: var(--neu-shadow-outer);
+
+    // Sidebar
+    --sidebar-bg: #e0e5ec;
+    --sidebar-border: transparent;
+    --sidebar-hover: #d4d9e1;
+    --sidebar-active-bg: rgba(99, 102, 241, 0.15);
+    --sidebar-active-text: #6366f1;
+
+    // Input
+    --input-bg: #e0e5ec;
+    --input-border: transparent;
+    --input-focus-border: #6366f1;
+
+    // Bootstrap overrides
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--text);
+    --bs-primary: var(--primary);
+    --bs-border-color: var(--border);
+}
+
+// =============================================================================
+// CORPORATE / ENTERPRISE THEME 💼
+// =============================================================================
+// Professional navy blue, refined and trustworthy
+
+.theme-corporate {
+    // Background
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-elevated: #ffffff;
+
+    // Text
+    --text: #1e293b;
+    --text-secondary: #475569;
+    --text-disabled: #94a3b8;
+
+    // Borders
+    --border: #e2e8f0;
+    --divider: #f1f5f9;
+    --border-color: var(--border);
+    --divider-color: var(--divider);
+    --surface-color: var(--surface);
+    --text-color: var(--text);
+    --bg-color: var(--bg);
+
+    --primary: #0f4c81;
+    --primary-rgb: 15, 76, 129;
+    --primary-hover: #0d3f6a;
+    --primary-active: #0a3356;
+    --primary-light: #e0f2fe;
+
+    // Secondary accent (gold)
+    --accent: #ca8a04;
+    --accent-light: #fef3c7;
+
+    // Semantic colors
+    --success: #16a34a;
+    --danger: #dc2626;
+    --warning: #d97706;
+
+    // Interactive states
+    --hover-bg: #f1f5f9;
+    --focus-ring: rgba(15, 76, 129, 0.4);
+
+    // Professional shadows
+    --elevation-1: 0 1px 2px rgba(15, 23, 42, 0.06);
+    --elevation-2: 0 1px 3px rgba(15, 23, 42, 0.1), 0 1px 2px rgba(15, 23, 42, 0.06);
+    --elevation-3: 0 4px 6px rgba(15, 23, 42, 0.1), 0 2px 4px rgba(15, 23, 42, 0.06);
+    --elevation-4: 0 10px 15px rgba(15, 23, 42, 0.1), 0 4px 6px rgba(15, 23, 42, 0.05);
+
+    // Sidebar
+    --sidebar-bg: #0f4c81;
+    --sidebar-border: #0d3f6a;
+    --sidebar-hover: rgba(255, 255, 255, 0.1);
+    --sidebar-active-bg: rgba(255, 255, 255, 0.15);
+    --sidebar-active-text: #ffffff;
+    --sidebar-text: rgba(255, 255, 255, 0.9);
+
+    // Input
+    --input-bg: #ffffff;
+    --input-border: #e2e8f0;
+    --input-focus-border: #0f4c81;
+
+    // Bootstrap overrides
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--text);
+    --bs-primary: var(--primary);
+    --bs-border-color: var(--border);
+}
+
+// =============================================================================
+// NAVY THEME (Professional High-Contrast) ⚓
+// =============================================================================
+
+.theme-navy {
+    // Background & Surfaces
+    --bg: #f5f8ff; // Faint cool blue-white
+    --surface: #ffffff;
+    --surface-elevated: #ffffff;
+
+    // Text
+    --text: #1a2b4a;
+    --text-secondary: #7b91b0;
+    --text-disabled: #94a3b8;
+
+    // Borders & Dividers
+    --border: #e4eaf5;
+    --divider: #e4eaf5;
+    --border-color: var(--border);
+    --divider-color: var(--divider);
+    --surface-color: var(--surface);
+    --text-color: var(--text);
+    --bg-color: var(--bg);
+
+    // Primary (Strong Navy Blue)
+    --primary: #1d427e;
+    --primary-rgb: 29, 66, 126;
+    --primary-hover: #163363;
+    --primary-active: #0f2448;
+    --primary-light: rgba(29, 66, 126, 0.1);
+
+    // Semantic colors
+    --success: #16a34a;
+    --danger: #dc2626;
+    --warning: #d97706;
+
+    // Interactive states
+    --hover-bg: #f6f9ff;
+    --focus-ring: rgba(29, 66, 126, 0.12);
+
+    // Sidebar
+    --sidebar-bg: #0a1628;
+    --sidebar-border: #0a1628;
+    --sidebar-hover: #0f2044;
+    --sidebar-active-bg: rgba(255, 255, 255, 0.1);
+    --sidebar-active-text: #ffffff;
+    --sidebar-active-border: #6494d8;
+    --sidebar-text: rgba(255, 255, 255, 0.6);
+    --sidebar-text-hover: rgba(255, 255, 255, 0.9);
+
+    // Table Header
+    --table-header-bg: #f6f9ff;
+
+    // Input
+    --input-bg: #ffffff;
+    --input-border: #d8e0f0; // Slightly higher opacity for rest
+    --input-focus-border: #1d427e;
+
+    // Elevations & Shadows
+    --navy-shadow: 0 2px 4px rgba(10, 22, 40, 0.05);
+
+    // Cancel Button (btn-secondary) specific override for Navy Theme
+    .btn-secondary {
+        color: var(--text-secondary);
+        border-color: var(--border);
+        background-color: transparent;
+
+        &:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--text-secondary);
+            color: var(--text);
+        }
+    }
+
+    // Bootstrap overrides
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--text);
+    --bs-primary: var(--primary);
+    --bs-border-color: var(--border);
+}
+
+// =============================================================================
+// BASE STYLES
+// =============================================================================
+
+
+body {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text);
+    background-color: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// Typography
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-normal);
+    color: var(--text);
+    margin-bottom: var(--space-2);
+}
+
+h1 {
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-height-tight);
+}
+
+h2 {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-tight);
+}
+
+h3 {
+    font-size: var(--font-size-lg);
+}
+
+h4 {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+}
+
+h5 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+}
+
+h6 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+// Links
+a {
+    color: var(--primary);
+    text-decoration: none;
+
+    &:hover {
+        color: var(--primary-hover);
+        text-decoration: underline;
+    }
+}
+
+// Selection
+::selection {
+    background-color: var(--primary-light);
+    color: var(--text);
+}
+
+// Focus styles
+:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+// =============================================================================
+// COMPONENT STYLES (Theme-aware)
+// =============================================================================
+
+// Buttons
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+
+    &:hover {
+        background-color: var(--primary-hover);
+        border-color: var(--primary-hover);
+    }
+
+    &:active,
+    &:focus {
+        background-color: var(--primary-active);
+        border-color: var(--primary-active);
+    }
+
+    &:disabled,
+    &.disabled {
+        background-color: var(--primary) !important;
+        border-color: var(--primary) !important;
+        color: #ffffff !important;
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border-color: var(--border);
+    color: var(--primary);
+
+    &:hover {
+        background-color: var(--primary-light);
+        border-color: var(--primary-light);
+    }
+
+    &:disabled,
+    &.disabled {
+        background-color: transparent;
+        border-color: var(--divider);
+        color: var(--text-disabled);
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+    background-color: transparent;
+
+    &:hover {
+        background-color: var(--primary-light);
+    }
+
+    &:disabled,
+    &.disabled {
+        background-color: transparent;
+        border-color: var(--text-disabled);
+        color: var(--text-disabled);
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+// Form controls
+.form-control {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--text);
+
+    &:hover {
+        border-color: var(--text-secondary);
+    }
+
+    &:focus {
+        border-color: var(--input-focus-border);
+        box-shadow: inset 0 0 0 1px var(--input-focus-border);
+    }
+
+    &::placeholder {
+        color: var(--text-secondary);
+    }
+
+    &:disabled {
+        background-color: var(--hover-bg);
+        color: var(--text-disabled);
+    }
+}
+
+// Checkbox
+.form-check-input {
+    border-color: var(--text-secondary);
+    background-color: transparent;
+
+    &:checked {
+        background-color: var(--primary);
+        border-color: var(--primary);
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 4px var(--focus-ring);
+    }
+}
+
+// Cards
+.card {
+    background-color: var(--surface);
+    border-color: var(--border);
+
+    &:hover {
+        box-shadow: var(--elevation-2);
+    }
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom-color: var(--divider);
+}
+
+// Tables - Google Material Style
+.table {
+    color: var(--text);
+    background-color: var(--surface);
+    border-collapse: separate;
+    border-spacing: 0;
+
+    // Header styling
+    thead {
+        th {
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            background-color: var(--surface);
+            border-bottom: 2px solid var(--divider);
+            padding: 12px 16px;
+            white-space: nowrap;
+
+            // Sortable indicator
+            &.sortable {
+                cursor: pointer;
+                user-select: none;
+
+                &:hover {
+                    color: var(--text);
+                }
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            border-bottom: 1px solid var(--divider);
+            transition: background-color 0.1s;
+
+            &:hover {
+                background-color: var(--hover-bg);
+            }
+
+            // Zebra striping (optional, use .table-striped)
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        td {
+            padding: 12px 16px;
+            vertical-align: middle;
+            border: none;
+            color: var(--text);
+
+            // First column - primary text
+            &:first-child {
+                font-weight: 500;
+            }
+        }
+    }
+
+    // Checkbox column
+    .checkbox-col {
+        width: 48px;
+        padding: 8px 12px;
+    }
+
+    // Action column
+    .action-col {
+        width: 100px;
+        text-align: right;
+        white-space: nowrap;
+
+        .btn,
+        button {
+            padding: 6px;
+            margin-left: 4px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+// Bordered variant
+.table-bordered {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+
+    thead th {
+        border-bottom-width: 1px;
+    }
+
+    td,
+    th {
+        border: none;
+        border-bottom: 1px solid var(--divider);
+    }
+}
+
+// Compact table
+.table-sm {
+    thead th {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    tbody td {
+        padding: 8px 12px;
+    }
+}
+
+
+// Dropdowns
+.dropdown-menu {
+    background-color: var(--surface-elevated);
+    border: none;
+    box-shadow: var(--elevation-3);
+}
+
+.dropdown-item {
+    color: var(--text);
+
+    &:hover {
+        background-color: var(--hover-bg);
+    }
+
+    &.active,
+    &:active {
+        background-color: var(--primary-light);
+        color: var(--primary);
+    }
+}
+
+// Modals
+.modal-content {
+    background-color: var(--surface);
+    border: none;
+    box-shadow: var(--elevation-4);
+}
+
+.modal-header {
+    border-bottom-color: var(--divider);
+}
+
+.modal-footer {
+    border-top-color: var(--divider);
+}
+
+// Pagination is handled by CSS variables in _bootstrap-overrides.scss
+
+// Alerts
+.alert-primary {
+    background-color: var(--primary-light);
+    border-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.alert-success {
+    background-color: #e6f4ea;
+    border-color: #e6f4ea;
+    color: var(--success);
+}
+
+.alert-danger {
+    background-color: #fce8e6;
+    border-color: #fce8e6;
+    color: var(--danger);
+}
+
+.alert-warning {
+    background-color: #fef7e0;
+    border-color: #fef7e0;
+    color: #b06000;
+}
+
+// Sidebar
+.sidebar-container {
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
+}
+
+// ng-select (if used)
+.ng-select {
+    .ng-select-container {
+        background-color: var(--input-bg);
+        border-color: var(--input-border);
+    }
+
+    &.ng-select-focused .ng-select-container {
+        border-color: var(--input-focus-border);
+        box-shadow: inset 0 0 0 1px var(--input-focus-border);
+    }
+
+    .ng-dropdown-panel {
+        background-color: var(--surface-elevated);
+        border: none;
+        box-shadow: var(--elevation-3);
+    }
+
+    .ng-option {
+        &.ng-option-marked {
+            background-color: var(--hover-bg);
+        }
+
+        &.ng-option-selected {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+    }
+}
+
+// =============================================================================
+// THEME-SPECIFIC COMPONENT OVERRIDES
+// =============================================================================
+
+// Glassmorphism - Glass effect on cards and containers
+.theme-glass {
+    body {
+        background: var(--bg-gradient, var(--bg));
+        background-attachment: fixed;
+    }
+
+    .card,
+    .modal-content,
+    .dropdown-menu {
+        background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border: var(--glass-border);
+        box-shadow: var(--elevation-2);
+    }
+
+    .sidebar-container {
+        background: var(--sidebar-bg);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+        border: none;
+
+        &:hover {
+            background: var(--primary-hover);
+        }
+
+        &:disabled,
+        &.disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    .form-control {
+        background: var(--input-bg);
+        border-color: var(--input-border);
+    }
+
+    .content-area {
+        background: transparent;
+    }
+
+    .table {
+        background: var(--surface);
+    }
+}
+
+
+// Bold theme - Larger radius and gradient buttons
+.theme-bold {
+    .card {
+        border-radius: var(--radius-md);
+    }
+
+    .btn {
+        border-radius: var(--radius-sm);
+    }
+
+    .btn-primary {
+        background: var(--primary-gradient);
+        border: none;
+
+        &:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        &:disabled,
+        &.disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    .form-control {
+        border-radius: var(--radius-sm);
+    }
+
+    .table {
+        border-radius: var(--radius-md);
+    }
+}
+
+// Neumorphism - Soft shadows on components
+.theme-soft {
+    .card {
+        border: none;
+        box-shadow: var(--neu-shadow-outer);
+    }
+
+    .btn {
+        box-shadow: var(--neu-shadow-outer);
+        border: none;
+
+        &:active {
+            box-shadow: var(--neu-shadow-pressed);
+        }
+    }
+
+    .form-control {
+        border: none;
+        box-shadow: var(--neu-shadow-inner);
+
+        &:focus {
+            box-shadow: var(--neu-shadow-inner), 0 0 0 2px var(--primary);
+        }
+    }
+
+    .table {
+        border: none;
+        box-shadow: var(--neu-shadow-outer);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .sidebar-container {
+        box-shadow: var(--neu-shadow-outer);
+        border: none;
+    }
+}
+
+// Corporate theme - Navy sidebar with light text
+.theme-corporate {
+    .sidebar-container {
+        .nav-link {
+            color: var(--sidebar-text);
+
+            &:hover {
+                background-color: var(--sidebar-hover);
+            }
+
+            &.active {
+                background-color: var(--sidebar-active-bg);
+                color: var(--sidebar-active-text);
+            }
+        }
+    }
+
+    .btn-secondary {
+        background-color: var(--accent-light);
+        color: var(--accent);
+        border: none;
+
+        &:hover {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+    }
+}
+
+// Navy theme - component-level refinements
+.theme-navy {
+    .table {
+        thead th {
+            background-color: var(--table-header-bg);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+    }
+
+    .card {
+        border: 1px solid var(--border);
+        box-shadow: var(--navy-shadow);
+
+        &:hover {
+            box-shadow: 0 4px 8px rgba(10, 22, 40, 0.08);
+        }
+    }
+
+    .form-control {
+        border-color: var(--input-border);
+
+        &:focus {
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+    }
+
+    .btn-primary:disabled,
+    .btn-primary.disabled {
+        background-color: var(--primary-light);
+        border-color: var(--primary-light);
+        color: var(--primary);
+        opacity: 0.5;
+    }
+}

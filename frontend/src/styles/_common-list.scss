@@ -1,0 +1,219 @@
+// =============================================================================
+// Common List View Styles
+// =============================================================================
+// Standardized styles for list views across the app, adhering to token grids.
+
+@use "tokens" as *;
+
+// =============================================================================
+// LIST TOOLBAR
+// =============================================================================
+.list-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4); // Increased horizontal padding
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md) var(--radius-md) 0 0; // Top-only rounding if it sits above table
+    margin-bottom: 0; // Connect to container
+    border-bottom: none; // Remove bottom border to merge with table container
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &-title {
+        font-family: var(--font-family-heading);
+        font-size: var(--font-size-xl); // Increased from lg
+        font-weight: var(--font-weight-medium);
+        color: var(--primary); // Use primary color for branding
+        margin: 0;
+        letter-spacing: -0.01em;
+    }
+
+    &-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3); // Increased gap
+        flex-wrap: wrap;
+
+        // Custom action icon - Increased specificity to override global .crm-svg
+        .crm-svg {
+            padding: var(--space-1) !important;
+            background-color: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+
+            i svg {
+                width: 1.25rem !important; // 20px - slightly larger
+                height: 1.25rem !important;
+            }
+
+            &:hover {
+                background-color: transparent !important;
+                color: var(--primary);
+                transform: scale(1.1); // Use scale instead of background for feedback
+            }
+
+            &.danger:hover {
+                background-color: color-mix(in srgb, var(--danger) 10%, transparent);
+                color: var(--danger);
+            }
+        }
+    }
+}
+
+// =============================================================================
+// LIST TABLE CONTAINER
+// =============================================================================
+.list-table-container {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg); // Flat top, rounded bottom
+    box-shadow: var(--elevation-1);
+    overflow-x: auto;
+    position: relative; // For loader overlay
+}
+
+// =============================================================================
+// LIST TABLE
+// =============================================================================
+.list-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; // Ensure table doesn't squash too much on mobile
+
+    thead {
+        background-color: var(--primary-light); // Theme-aware background
+        border-bottom: 2px solid var(--primary); // Thematic accent line
+
+        th {
+            padding: var(--space-2) var(--space-3); // Matched body padding
+            text-align: left;
+            font-size: var(--font-size-xs); // 11px for crisp caps
+            font-weight: var(--font-weight-bold);
+            color: var(--primary); // Primary color matching the background
+            text-transform: uppercase;
+            letter-spacing: 0.1em; // Increased spacing for uppercase
+            white-space: nowrap;
+            opacity: 0.85; // Subtle softness
+        }
+    }
+
+    tbody {
+        tr {
+            transition: background-color var(--transition-fast);
+            border-bottom: 1px solid var(--divider);
+
+            &:hover {
+                background-color: var(--hover-bg);
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            // Allow row clicking if needed
+            &.clickable {
+                cursor: pointer;
+            }
+        }
+
+        td {
+            padding: var(--space-2) var(--space-3); // Compact padding: 8px 16px
+            font-size: var(--font-size-base);
+            color: var(--text);
+            vertical-align: middle;
+
+            // Links in table
+            a:not(.btn) {
+                color: var(--primary);
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+// =============================================================================
+// LIST ACTION BUTTONS
+// =============================================================================
+.list-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--button-height-sm); // 32px based on tokens
+    height: var(--button-height-sm);
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-sm); // rounded-square style
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    i svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    // Standard states
+    &:hover {
+        background-color: var(--primary-light);
+        color: var(--primary);
+    }
+
+    // Danger state
+    &.danger {
+        &:hover {
+            background-color: color-mix(in srgb, var(--danger) 15%, transparent);
+            color: var(--danger);
+        }
+    }
+}
+
+// =============================================================================
+// LIST LOADER
+// =============================================================================
+.list-loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.6); // Semi-transparent overlay
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+
+    // Support dark mode correctly
+    @at-root .theme-dark & {
+        background-color: rgba(31, 31, 31, 0.6); // Based on dark-bg
+    }
+}
+
+// Custom spinning loader animation
+.list-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--primary-light);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: list-spin 1s linear infinite;
+}
+
+@keyframes list-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

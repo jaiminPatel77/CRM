@@ -7,17 +7,17 @@ services:
     restart: always
     environment:
       POSTGRES_DB: crm_db
-      POSTGRES_USER: crm_user
-      POSTGRES_PASSWORD: crm_password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - crm_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U crm_user -d crm_db"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d crm_db"]
       interval: 5s
       timeout: 5s
       retries: 5
 
 volumes:
-  postgres_data:
+  crm_postgres_data:
