@@ -30,6 +30,11 @@ export const routes: Routes = [
                 path: 'admin',
                 canActivate: [authGuard],
                 loadChildren: () => import('./features/admin/admin.routes').then(r => r.adminRoutes)
+            },
+            {
+                path: 'crm',
+                canActivate: [authGuard],
+                loadChildren: () => import('./features/crm/crm.routes').then(r => r.crmRoutes)
             }
         ]
     },

@@ -24,7 +24,11 @@ export class BaseService<A extends object = object> {
     Setting: `${BaseService.API_V1}/setting`,
     Project: `${BaseService.API_V1}/project`,
     Task: `${BaseService.API_V1}/task`,
-    AuditLog: `${BaseService.API_V1}/auditlog`
+    AuditLog: `${BaseService.API_V1}/auditlog`,
+    Customer: `${BaseService.API_V1}/customers`,
+    Lead: `${BaseService.API_V1}/leads`,
+    Opportunity: `${BaseService.API_V1}/opportunities`,
+    Activity: `${BaseService.API_V1}/activities`
   } as const;
 
   private readonly _commonService = inject(CommonService);

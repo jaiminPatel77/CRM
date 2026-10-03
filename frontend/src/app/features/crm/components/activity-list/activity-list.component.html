@@ -1,0 +1,108 @@
+<div class="crm-page-container">
+  <div class="crm-header-card">
+    <div class="header-content">
+      <h2>Activities & Tasks</h2>
+      <p>Schedule calls, meetings, tasks, and follow-up notes for customer accounts.</p>
+    </div>
+    <button class="btn btn-primary" (click)="openCreateModal()">
+      Add Activity
+    </button>
+  </div>
+
+  <div class="crm-table-card">
+    @if (isLoading()) {
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th style="width: 40px;">Done</th>
+              <th>Subject</th>
+              <th>Type</th>
+              <th>Due Date</th>
+              <th>Description</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (act of activities(); track act.id) {
+              <tr [class.table-light]="act.isCompleted">
+                <td>
+                  <input type="checkbox" class="form-check-input" [checked]="act.isCompleted" (change)="toggleCompleted(act)">
+                </td>
+                <td class="fw-semibold" [class.text-decoration-line-through]="act.isCompleted">{{ act.subject }}</td>
+                <td>
+                  <span class="badge" [ngClass]="getTypeBadgeClass(act.type)">
+                    {{ getTypeLabel(act.type) }}
+                  </span>
+                </td>
+                <td>{{ act.dueDate ? (act.dueDate | date:'mediumDate') : '-' }}</td>
+                <td class="text-truncate" style="max-width: 250px;">{{ act.description || '-' }}</td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-primary me-2" (click)="openEditModal(act)">Edit</button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteActivity(act.id)">Delete</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">No activities scheduled. Click "Add Activity" to log a task.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+  @if (isModalOpen()) {
+    <div class="modal d-block backdrop" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ editingActivity() ? 'Edit Activity' : 'Add Activity' }}</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+          </div>
+          <form [formGroup]="activityForm" (ngSubmit)="saveActivity()">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Subject *</label>
+                <input type="text" class="form-control" formControlName="subject" placeholder="Follow-up call with VP of Sales">
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Type *</label>
+                  <select class="form-select" formControlName="type">
+                    <option [value]="enumActivityType.Task">Task</option>
+                    <option [value]="enumActivityType.Call">Call</option>
+                    <option [value]="enumActivityType.Meeting">Meeting</option>
+                    <option [value]="enumActivityType.Email">Email</option>
+                    <option [value]="enumActivityType.Note">Note</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Due Date</label>
+                  <input type="date" class="form-control" formControlName="dueDate">
+                </div>
+              </div>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="isCompletedCheck" formControlName="isCompleted">
+                <label class="form-check-label" for="isCompletedCheck">Mark as completed</label>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" rows="3" formControlName="description"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+              <button type="submit" class="btn btn-primary" [disabled]="activityForm.invalid">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
+</div>

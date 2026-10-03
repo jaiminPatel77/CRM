@@ -7,6 +7,12 @@ export class MenuHelper {
      */
     public static readonly menus: MenuItem[] = [
         new MenuItem('dashboard', 'SIDE_BAR_DASHBOARD', '/dashboard', 'crm_icon', false, []),
+        new MenuItem('crm', 'SIDE_BAR_CRM', '/crm', 'crm_icon', false, [
+            new MenuItem('customers', 'Customers', '/crm/customers', 'crm_icon', false, []),
+            new MenuItem('leads', 'Leads', '/crm/leads', 'crm_icon', false, []),
+            new MenuItem('opportunities', 'Opportunities', '/crm/opportunities', 'crm_icon', false, []),
+            new MenuItem('activities', 'Activities', '/crm/activities', 'crm_icon', false, [])
+        ], false),
         new MenuItem('admin', 'SIDE_BAR_ADMIN', '/admin', 'crm_icon', false, [
             new MenuItem('roles', 'SIDE_BAR_ROLES', '/admin/roles', 'crm_icon', false, []),
             new MenuItem('users', 'SIDE_BAR_USERS', '/admin/users', 'crm_icon', false, []),
