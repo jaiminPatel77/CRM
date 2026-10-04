@@ -58,6 +58,7 @@ out/
 project.lock.json
 project.fragment.lock.json
 *.props
+!Directory.Build.props
 *.targets
 
 ## Test Results
