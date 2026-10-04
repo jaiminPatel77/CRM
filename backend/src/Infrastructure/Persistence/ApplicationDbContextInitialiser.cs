@@ -32,7 +32,7 @@ public class ApplicationDbContextInitialiser
         {
             if (_context.Database.IsRelational())
             {
-                await _context.Database.MigrateAsync();
+                await _context.Database.EnsureCreatedAsync();
             }
         }
         catch (Exception ex)

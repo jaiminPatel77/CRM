@@ -45,7 +45,13 @@ public static class DependencyInjection
         var jwtSection = configuration.GetSection("Authentication:JwtIssuerOptions");
         services.Configure<Crm.Application.Common.Models.JwtIssuerOptions>(jwtSection);
 
-        var signingKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(jwtSection["SecretKey"] ?? "DefaultSecretKeyMinimumLength32BytesMustBeSet!"));
+        var secretKey = jwtSection["SecretKey"];
+        if (string.IsNullOrWhiteSpace(secretKey))
+        {
+            throw new InvalidOperationException("Authentication:JwtIssuerOptions:SecretKey configuration is missing or empty.");
+        }
+
+        var signingKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey));
         var jwtOptions = jwtSection.Get<Crm.Application.Common.Models.JwtIssuerOptions>() ?? new Crm.Application.Common.Models.JwtIssuerOptions();
         
         services.AddAuthentication(options =>
@@ -67,6 +73,14 @@ public static class DependencyInjection
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
+        });
+
+        services.AddAuthorization(options =>
+        {
+            foreach (var permission in Crm.Application.Common.Security.Permissions.GetAll())
+            {
+                options.AddPolicy(permission, policy => policy.RequireAuthenticatedUser());
+            }
         });
 
         // Add Services

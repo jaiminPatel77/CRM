@@ -11,6 +11,8 @@ using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
 using Serilog;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Add Services to the container.

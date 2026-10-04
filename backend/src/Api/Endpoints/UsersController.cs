@@ -1,4 +1,5 @@
 using Crm.Application.Common.Models;
+using Crm.Application.Common.Security;
 using Crm.Application.Features.Users;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,7 @@ public class UsersController : ApiControllerBase
 
     // PUT api/users/{id}
     [HttpPut("{id}")]
-    // [Authorize(Policy = Permissions.Users.Edit)]
+    [Authorize(Policy = Permissions.Users.Edit)]
     public async Task<ActionResult<Result<long>>> Update(long id, UpdateUserCommand command)
     {
         if (id != command.Id) return BadRequest();
@@ -34,7 +35,7 @@ public class UsersController : ApiControllerBase
 
     // DELETE api/users/{id}
     [HttpDelete("{id}")]
-    // [Authorize(Policy = Permissions.Users.Delete)]
+    [Authorize(Policy = Permissions.Users.Delete)]
     public async Task<ActionResult<Result<bool>>> Delete(long id)
     {
         return await Mediator.Send(new DeleteUserCommand { Id = id });
@@ -42,7 +43,7 @@ public class UsersController : ApiControllerBase
 
     // GET api/users?page=1&pageSize=10
     [HttpGet]
-    // [Authorize(Policy = Permissions.Users.View)] 
+    [Authorize(Policy = Permissions.Users.View)]
     public async Task<ActionResult<Result<Paging<UserDto>>>> GetUsers([FromQuery] GetUsersWithPaginationQuery query)
     {
         return await Mediator.Send(query);
@@ -50,7 +51,7 @@ public class UsersController : ApiControllerBase
 
     // GET api/users/{id}
     [HttpGet("{id}")]
-    // [Authorize(Policy = Permissions.Users.View)]
+    [Authorize(Policy = Permissions.Users.View)]
     public async Task<ActionResult<Result<UserDto>>> GetUser(long id)
     {
         return await Mediator.Send(new GetUserByIdQuery { Id = id });
@@ -65,7 +66,7 @@ public class UsersController : ApiControllerBase
 
     // POST api/users/{id}/roles
     [HttpPost("{id}/roles")]
-    // [Authorize(Policy = Permissions.Users.Edit)]
+    [Authorize(Policy = Permissions.Users.Edit)]
     public async Task<ActionResult<Result<bool>>> AssignRoles(long id, AssignUserRolesCommand command)
     {
         if (id != command.Id) return BadRequest();

@@ -1,4 +1,5 @@
 using Crm.Application.Common.Models;
+using Crm.Application.Common.Security;
 using Crm.Application.Features.Roles;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
@@ -18,7 +19,7 @@ public class RolesController : ApiControllerBase
 {
     // GET api/roles?page=1&pageSize=10
     [HttpGet]
-    // [Authorize(Policy = Permissions.Roles.View)]
+    [Authorize(Policy = Permissions.Roles.View)]
     public async Task<ActionResult<Result<Paging<RoleDto>>>> GetRoles([FromQuery] GetRolesWithPaginationQuery query)
     {
         return await Mediator.Send(query);
@@ -33,7 +34,7 @@ public class RolesController : ApiControllerBase
 
     // GET api/roles/{id}
     [HttpGet("{id}")]
-    // [Authorize(Policy = Permissions.Roles.View)]
+    [Authorize(Policy = Permissions.Roles.View)]
     public async Task<ActionResult<Result<RoleDto>>> GetRole(long id)
     {
         return await Mediator.Send(new GetRoleByIdQuery { Id = id });
@@ -48,7 +49,7 @@ public class RolesController : ApiControllerBase
 
     // POST api/roles
     [HttpPost]
-    // [Authorize(Policy = Permissions.Roles.Create)]
+    [Authorize(Policy = Permissions.Roles.Create)]
     public async Task<ActionResult<Result<long>>> Create(CreateRoleCommand command)
     {
         return await Mediator.Send(command);
@@ -56,7 +57,7 @@ public class RolesController : ApiControllerBase
 
     // PUT api/roles/{id}
     [HttpPut("{id}")]
-    // [Authorize(Policy = Permissions.Roles.Edit)]
+    [Authorize(Policy = Permissions.Roles.Edit)]
     public async Task<ActionResult<Result<long>>> Update(long id, UpdateRoleCommand command)
     {
         if (id != command.Id) return BadRequest();
@@ -65,7 +66,7 @@ public class RolesController : ApiControllerBase
 
     // DELETE api/roles/{id}
     [HttpDelete("{id}")]
-    // [Authorize(Policy = Permissions.Roles.Delete)]
+    [Authorize(Policy = Permissions.Roles.Delete)]
     public async Task<ActionResult<Result<bool>>> Delete(long id)
     {
         return await Mediator.Send(new DeleteRoleCommand { Id = id });
@@ -73,7 +74,7 @@ public class RolesController : ApiControllerBase
 
     // PUT api/roles/{id}/permissions
     [HttpPut("{id}/permissions")]
-    // [Authorize(Policy = Permissions.Roles.Edit)]
+    [Authorize(Policy = Permissions.Roles.Edit)]
     public async Task<ActionResult<Result<bool>>> UpdatePermissions(long id, List<string> permissions)
     {
         return await Mediator.Send(new UpdateRolePermissionsCommand { RoleId = id, Permissions = permissions });

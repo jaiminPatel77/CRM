@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Reflection;
 
+using Microsoft.EntityFrameworkCore.Diagnostics;
+
 namespace Crm.Infrastructure.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext<User, Role, long>, IApplicationDbContext
@@ -39,6 +41,7 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, long>, IApplic
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.AddInterceptors(_auditableEntityInterceptor);
+        optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
