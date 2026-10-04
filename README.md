@@ -15,7 +15,7 @@ Modern full-stack multi-tenant CRM SaaS foundation built with **Angular 20** and
 ## Architecture Overview
 
 ```
-crm-app/
+crm/
 ├── backend/
 │   ├── src/
 │   │   ├── Api/ (Crm.Api)
@@ -24,21 +24,21 @@ crm-app/
 │   │   ├── Infrastructure/ (Crm.Infrastructure)
 │   │   ├── Contracts/ (Crm.Contracts)
 │   │   └── Tests/ (Crm.Tests)
+│   ├── Directory.Build.props
 │   └── Crm.sln
 ├── frontend/
+│   ├── e2e/
+│   │   └── auth/
+│   │       └── login.spec.ts
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── core/
-│   │   │   ├── features/
-│   │   │   │   ├── admin/
-│   │   │   │   ├── auth/
-│   │   │   │   └── master/
-│   │   │   └── shared/
 │   │   ├── environments/
 │   │   └── styles/
 │   ├── angular.json
 │   ├── package.json
+│   ├── playwright.config.ts
 │   └── vitest.config.ts
+├── AGENTS.md
 └── docker-compose.yml
 ```
 
@@ -57,9 +57,9 @@ crm-app/
 
 ### Frontend (Angular 20 Standalone)
 - **Angular 20 Standalone Components & Signals**
-- **Bootstrap 5.3 & SCSS Design Tokens** (7 active themes: light, dark, blue, glass, bold, soft, corporate)
+- **Bootstrap 5.3 & SCSS Design Tokens** (active custom design system)
 - **NgRx Store & Effects** state management
-- **Vitest** unit testing setup (46 spec files passing)
+- **Vitest & Playwright** unit and end-to-end testing suite
 - **Optional ReCaptcha** (`enableCaptcha: false` in development/test mode)
 
 ---
@@ -158,9 +158,10 @@ Frontend URL: `http://localhost:4200`
 
 ---
 
-## Verification & Status (Phase A Complete)
-- **Backend Build:** 0 errors
-- **Backend Tests:** 42/42 tests passing (`Crm.Tests` & `Crm.Contracts`)
+## Verification & Status (Stabilize Phase Complete)
+- **Backend Build:** 0 errors, 0 warnings
+- **Backend Tests:** 60/60 tests passing (`Crm.Tests` & `Crm.Contracts`)
 - **Frontend Build:** 0 errors, 0 warnings
-- **Frontend Tests:** 46/46 test files passing, 69/69 tests passing (Vitest)
+- **Frontend Tests:** 54/54 test files passing, 77/77 tests passing (Vitest)
+- **E2E Suite:** Playwright smoke tests configured
 - **Token Sanitization:** 0 hits for legacy company/template tokens
