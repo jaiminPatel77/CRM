@@ -3,7 +3,6 @@ using Crm.Application.Features.AuditLogs;
 using Crm.Domain.Entities;
 using Crm.Infrastructure.Persistence;
 using Crm.Infrastructure.Persistence.Interceptors;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using Xunit;
@@ -40,10 +39,10 @@ public class AuditLogFeaturesTests : IDisposable
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeTrue();
-        result.Data!.Data.Should().HaveCount(2);
-        result.Data.Data.Should().Contain(l => l.TableName == "Users");
-        result.Data.Data.Should().Contain(l => l.TableName == "Projects");
+        Assert.True(result.Succeeded);
+        Assert.Equal(2, result.Data!.Data.Count());
+        Assert.Contains(result.Data.Data, l => l.TableName == "Users");
+        Assert.Contains(result.Data.Data, l => l.TableName == "Projects");
     }
 
     public void Dispose()

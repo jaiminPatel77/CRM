@@ -2,7 +2,6 @@ using AutoFixture;
 using AutoFixture.AutoNSubstitute;
 using Crm.Application.Common.Interfaces;
 using Crm.Infrastructure.Services;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
@@ -29,9 +28,9 @@ public class AutoFixtureExampleTests
         var command = _fixture.Create<Application.Features.Users.CreateUserCommand>();
 
         // Assert
-        command.Email.Should().NotBeNullOrEmpty();
-        command.FullName.Should().NotBeNullOrEmpty();
-        command.Password.Should().NotBeNullOrEmpty();
+        Assert.False(string.IsNullOrEmpty(command.Email));
+        Assert.False(string.IsNullOrEmpty(command.FullName));
+        Assert.False(string.IsNullOrEmpty(command.Password));
     }
 
     [Fact]
@@ -51,7 +50,7 @@ public class AutoFixtureExampleTests
         var result = await service.LoginAsync(userEmail, password);
 
         // Assert
-        result.Succeeded.Should().BeFalse();
-        result.Errors.Should().Contain("Invalid login attempt.");
+        Assert.False(result.Succeeded);
+        Assert.Contains("Invalid login attempt.", result.Errors);
     }
 }

@@ -1,6 +1,5 @@
 using Crm.Api.Models;
 using Crm.Tests.Common;
-using FluentAssertions;
 using System.Net.Http.Json;
 using System.Net;
 using Xunit;
@@ -48,17 +47,16 @@ public class LogsControllerTests : IntegrationTestBase, IAsyncLifetime
     public async Task GetLogFiles_ShouldReturnEmpty_WhenNoLogsExist()
     {
         var response = await _client.GetAsync("/api/v1/logs/files");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         var result = await response.Content.ReadFromJsonAsync<TestApiResponse<List<LogFileInfo>>>();
-        result.Should().NotBeNull();
+        Assert.NotNull(result);
         
         // Filter out today's log because Serilog creates it automatically on startup
-        // It might be "log-20260318.txt" or "log-20260318_001.txt" etc.
         var todayPrefix = $"log-{DateTime.Today:yyyyMMdd}";
         var otherFiles = result!.Result.Where(f => !f.Name.StartsWith(todayPrefix)).ToList();
         
-        otherFiles.Should().BeEmpty();
+        Assert.Empty(otherFiles);
     }
 
     [Fact]
@@ -69,11 +67,11 @@ public class LogsControllerTests : IntegrationTestBase, IAsyncLifetime
 
         var response = await _client.GetAsync("/api/v1/logs/files");
         
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var json = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"DEBUG JSON: {json}");
         var result = await response.Content.ReadFromJsonAsync<TestApiResponse<List<LogFileInfo>>>();
-        result!.Result.Should().Contain(f => f.Name == fileName);
+        Assert.Contains(result!.Result, f => f.Name == fileName);
     }
 
     [Fact]
@@ -86,9 +84,9 @@ public class LogsControllerTests : IntegrationTestBase, IAsyncLifetime
 
         var response = await _client.GetAsync($"/api/v1/logs?date={date}");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var result = await response.Content.ReadFromJsonAsync<TestApiResponse<string>>();
-        result!.Result.Should().Be(content);
+        Assert.Equal(content, result!.Result);
     }
 
     [Fact]
@@ -109,9 +107,9 @@ public class LogsControllerTests : IntegrationTestBase, IAsyncLifetime
             Content = JsonContent.Create(request)
         });
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         
-        File.Exists(Path.Combine(_logsDir, oldFile)).Should().BeFalse();
-        File.Exists(Path.Combine(_logsDir, newFile)).Should().BeTrue();
+        Assert.False(File.Exists(Path.Combine(_logsDir, oldFile)));
+        Assert.True(File.Exists(Path.Combine(_logsDir, newFile)));
     }
 }

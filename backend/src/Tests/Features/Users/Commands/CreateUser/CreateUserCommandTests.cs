@@ -2,7 +2,6 @@ using Crm.Application.Common.Interfaces;
 using Crm.Application.Features.Users;
 using Crm.Domain.Consts;
 using Crm.Domain.Entities;
-using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -43,8 +42,8 @@ public class CreateUserCommandTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeTrue();
-        result.Data.Should().Be(0); 
+        Assert.True(result.Succeeded);
+        Assert.Equal(0, result.Data);
     }
 
     [Fact]
@@ -69,7 +68,7 @@ public class CreateUserCommandTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeTrue();
+        Assert.True(result.Succeeded);
         await _userManager.Received(1).AddToRolesAsync(Arg.Any<User>(), roles);
     }
 
@@ -94,8 +93,8 @@ public class CreateUserCommandTests
         await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        capturedUser.Should().NotBeNull();
-        capturedUser!.Status.Should().Be(EnumUserStatus.Created);
+        Assert.NotNull(capturedUser);
+        Assert.Equal(EnumUserStatus.Created, capturedUser!.Status);
     }
 
     [Fact]
@@ -119,7 +118,7 @@ public class CreateUserCommandTests
         await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        capturedPassword.Should().NotBeNullOrEmpty();
-        capturedPassword.Should().HaveLength(12); // Default generated length
+        Assert.False(string.IsNullOrEmpty(capturedPassword));
+        Assert.Equal(12, capturedPassword!.Length); // Default generated length
     }
 }

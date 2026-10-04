@@ -1,7 +1,6 @@
 using Crm.Application.Common.Interfaces;
 using Crm.Infrastructure.Persistence;
 using Crm.Infrastructure.Services;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -61,11 +60,9 @@ public class BackupServiceTests
 
         var service = new BackupService(_dbContext, _fileStorage, _logger, _emailService);
 
-        // Act
-        Func<Task> act = async () => await service.BackupDatabaseAsync();
-
-        // Assert
-        await act.Should().ThrowAsync<Exception>().WithMessage("Upload failed");
+        // Act & Assert
+        var ex = await Assert.ThrowsAsync<Exception>(() => service.BackupDatabaseAsync());
+        Assert.Equal("Upload failed", ex.Message);
         await _emailService.Received(1).SendEmailAsync(Arg.Any<string>(), "Backup Failed", Arg.Any<string>());
     }
     
@@ -92,7 +89,7 @@ public class BackupServiceTests
         var result = await service.CleanBackupsAsync(cutoffDate);
 
         // Assert
-        result.Should().Be(1); // Only oldFile
+        Assert.Equal(1, result); // Only oldFile
         await _fileStorage.Received(1).DeleteFileAsync(oldFile);
         await _fileStorage.DidNotReceive().DeleteFileAsync(recentFile);
         await _fileStorage.DidNotReceive().DeleteFileAsync(invalidFile);

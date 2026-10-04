@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using Crm.Application.Common.Models;
 using Crm.Application.Features.Users;
 using Crm.Tests.Common;
-using FluentAssertions;
 using Gridify;
 using Xunit;
 
@@ -31,10 +30,10 @@ public class UsersControllerTests : IntegrationTestBase
         var response = await _client.PostAsJsonAsync("/api/v1/Users", command);
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var result = await response.Content.ReadFromJsonAsync<TestResult<long>>();
-        result!.Succeeded.Should().BeTrue();
-        result.Data.Should().BeGreaterThan(0);
+        Assert.True(result!.Succeeded);
+        Assert.True(result.Data > 0);
     }
 
     [Fact]
@@ -54,10 +53,10 @@ public class UsersControllerTests : IntegrationTestBase
         var response = await _client.GetAsync($"/api/v1/Users/{id}");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var result = await response.Content.ReadFromJsonAsync<TestResult<UserDto>>();
-        result!.Succeeded.Should().BeTrue();
-        result.Data!.Email.Should().Be(command.Email);
+        Assert.True(result!.Succeeded);
+        Assert.Equal(command.Email, result.Data!.Email);
     }
 
     [Fact]
@@ -77,13 +76,13 @@ public class UsersControllerTests : IntegrationTestBase
         var response = await _client.DeleteAsync($"/api/v1/Users/{id}");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var result = await response.Content.ReadFromJsonAsync<TestResult<bool>>();
-        result!.Succeeded.Should().BeTrue();
+        Assert.True(result!.Succeeded);
 
         // Verify it's gone
         var getResponse = await _client.GetAsync($"/api/v1/Users/{id}");
-        getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
     }
 
     [Fact]
@@ -93,9 +92,9 @@ public class UsersControllerTests : IntegrationTestBase
         var response = await _client.GetAsync("/api/v1/Users?Page=1&PageSize=10");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var result = await response.Content.ReadFromJsonAsync<TestResult<Paging<UserDto>>>();
-        result!.Succeeded.Should().BeTrue();
-        result.Data.Should().NotBeNull();
+        Assert.True(result!.Succeeded);
+        Assert.NotNull(result.Data);
     }
 }

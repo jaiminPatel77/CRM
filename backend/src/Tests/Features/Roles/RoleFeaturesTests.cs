@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Crm.Application.Common.Interfaces;
 using Crm.Application.Features.Roles;
 using Crm.Domain.Entities;
-using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using NSubstitute;
 using Xunit;
@@ -39,7 +38,7 @@ public class RoleFeaturesTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeTrue();
+        Assert.True(result.Succeeded);
         await _roleManager.Received(1).CreateAsync(Arg.Is<Role>(r => r.Name == command.Name && r.Description == command.Description));
     }
 
@@ -56,8 +55,8 @@ public class RoleFeaturesTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeFalse();
-        result.Errors.Should().Contain($"Role '{command.Name}' already exists.");
+        Assert.False(result.Succeeded);
+        Assert.Contains($"Role '{command.Name}' already exists.", result.Errors);
     }
 
     [Fact]
@@ -76,8 +75,8 @@ public class RoleFeaturesTests
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeTrue();
-        result.Data!.Name.Should().Be("TestRole");
+        Assert.True(result.Succeeded);
+        Assert.Equal("TestRole", result.Data!.Name);
     }
 
     [Fact]
@@ -99,7 +98,7 @@ public class RoleFeaturesTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeTrue();
+        Assert.True(result.Succeeded);
         await _roleManager.Received(2).AddClaimAsync(role, Arg.Is<Claim>(c => c.Type == "Permission" && permissions.Contains(c.Value)));
     }
 }

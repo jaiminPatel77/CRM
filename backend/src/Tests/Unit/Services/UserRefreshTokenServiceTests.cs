@@ -3,7 +3,6 @@ using Crm.Domain.Entities;
 using Crm.Infrastructure.Persistence;
 using Crm.Infrastructure.Persistence.Interceptors;
 using Crm.Infrastructure.Services;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using Xunit;
@@ -43,8 +42,8 @@ public class UserRefreshTokenServiceTests : IDisposable
 
         // Assert
         var stored = await _context.UserRefreshTokens.FirstOrDefaultAsync(t => t.RefreshToken == "token123");
-        stored.Should().NotBeNull();
-        stored!.UserId.Should().Be(1);
+        Assert.NotNull(stored);
+        Assert.Equal(1, stored!.UserId);
     }
 
     [Fact]
@@ -64,8 +63,8 @@ public class UserRefreshTokenServiceTests : IDisposable
         var result = await _service.GetRefreshToken("valid_token");
 
         // Assert
-        result.Should().NotBeNull();
-        result!.RefreshToken.Should().Be("valid_token");
+        Assert.NotNull(result);
+        Assert.Equal("valid_token", result!.RefreshToken);
     }
 
     [Fact]
@@ -85,9 +84,9 @@ public class UserRefreshTokenServiceTests : IDisposable
         var result = await _service.GetRefreshToken("expired_token");
 
         // Assert
-        result.Should().BeNull();
+        Assert.Null(result);
         var stored = await _context.UserRefreshTokens.FirstOrDefaultAsync(t => t.RefreshToken == "expired_token");
-        stored.Should().BeNull(); // Should be deleted
+        Assert.Null(stored); // Should be deleted
     }
 
     [Fact]
@@ -108,6 +107,6 @@ public class UserRefreshTokenServiceTests : IDisposable
 
         // Assert
         var stored = await _context.UserRefreshTokens.FirstOrDefaultAsync(t => t.RefreshToken == "remove_me");
-        stored.Should().BeNull();
+        Assert.Null(stored);
     }
 }

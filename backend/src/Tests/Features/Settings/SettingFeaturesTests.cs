@@ -3,7 +3,6 @@ using Crm.Application.Features.Settings;
 using Crm.Domain.Entities;
 using Crm.Infrastructure.Persistence;
 using Crm.Infrastructure.Persistence.Interceptors;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,16 +58,16 @@ public class SettingFeaturesTests : IDisposable
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeTrue();
-        result.Data!.Value.Should().Be("TestValue");
+        Assert.True(result.Succeeded);
+        Assert.Equal("TestValue", result.Data!.Value);
 
         // Verify it was cached (by deleting from DB and fetching again)
         _context.Settings.Remove(setting);
         await _context.SaveChangesAsync();
 
         var cachedResult = await handler.Handle(query, CancellationToken.None);
-        cachedResult.Succeeded.Should().BeTrue();
-        cachedResult.Data!.Value.Should().Be("TestValue");
+        Assert.True(cachedResult.Succeeded);
+        Assert.Equal("TestValue", cachedResult.Data!.Value);
     }
 
     [Fact]
@@ -82,8 +81,8 @@ public class SettingFeaturesTests : IDisposable
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeTrue();
-        _context.Settings.Should().ContainSingle(s => s.Key == "NewKey");
+        Assert.True(result.Succeeded);
+        Assert.Single(_context.Settings.Where(s => s.Key == "NewKey"));
     }
 
     [Fact]
@@ -98,8 +97,8 @@ public class SettingFeaturesTests : IDisposable
 
         // Assert
         var setting = await _context.Settings.FirstOrDefaultAsync(x => x.Key == "SMTP_SETTING");
-        setting.Should().NotBeNull();
-        setting!.Value.Should().Contain("smtp.test.com");
+        Assert.NotNull(setting);
+        Assert.Contains("smtp.test.com", setting!.Value);
     }
 
     public void Dispose()

@@ -2,7 +2,6 @@ using Crm.Application.Common.Interfaces;
 using Crm.Application.Common.Models;
 using Crm.Domain.Entities;
 using Crm.Infrastructure.Services;
-using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -60,9 +59,9 @@ public class AuthServiceTests
         var result = await service.LoginAsync("test@example.com", "Password123!");
 
         // Assert
-        result.Succeeded.Should().BeTrue();
-        result.Data.Should().NotBeNull();
-        result.Data.AccessToken.Should().NotBeNullOrEmpty();
+        Assert.True(result.Succeeded);
+        Assert.NotNull(result.Data);
+        Assert.False(string.IsNullOrEmpty(result.Data.AccessToken));
         await _refreshTokenService.Received(1).CreateRefreshToken(Arg.Any<UserRefreshToken>());
     }
 
@@ -77,8 +76,8 @@ public class AuthServiceTests
         var result = await service.LoginAsync("unknown@example.com", "password");
 
         // Assert
-        result.Succeeded.Should().BeFalse();
-        result.Errors.Should().Contain("Invalid login attempt.");
+        Assert.False(result.Succeeded);
+        Assert.Contains("Invalid login attempt.", result.Errors);
     }
     
     [Fact]
@@ -94,8 +93,8 @@ public class AuthServiceTests
         var result = await service.RegisterAsync("new@example.com", "Password123!", "New User");
 
         // Assert
-        result.Succeeded.Should().BeTrue();
-        result.Data.Should().NotBeNull();
+        Assert.True(result.Succeeded);
+        Assert.NotNull(result.Data);
         await _userManager.Received(1).CreateAsync(Arg.Is<User>(u => u.Email == "new@example.com"), "Password123!");
     }
 }

@@ -1,7 +1,6 @@
 using Crm.Application.Common.Interfaces;
 using Crm.Application.Common.Models;
 using Crm.Application.Features.Auth.Commands.RequestAccess;
-using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
@@ -34,8 +33,8 @@ public class RequestAccessCommandTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeFalse();
-        result.Errors.Should().Contain("ReCaptcha validation failed.");
+        Assert.False(result.Succeeded);
+        Assert.Contains("ReCaptcha validation failed.", result.Errors);
         await _emailService.DidNotReceive().SendEmailAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
     }
 
@@ -54,8 +53,8 @@ public class RequestAccessCommandTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Succeeded.Should().BeTrue();
-        result.Data.Should().BeTrue();
+        Assert.True(result.Succeeded);
+        Assert.True(result.Data);
         await _emailService.Received(1).SendEmailAsync(
             "admin@example.com", 
             "New Access Request", 
