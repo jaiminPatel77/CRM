@@ -132,9 +132,23 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, long>, IApplic
             var currentTenantId = _tenantContext.CurrentTenantId.Value;
             foreach (var entry in ChangeTracker.Entries<ITenantEntity>())
             {
-                if (entry.State == EntityState.Added && entry.Entity.TenantId == Guid.Empty)
+                if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.TenantId = currentTenantId;
+                    if (entry.Entity.TenantId == Guid.Empty)
+                    {
+                        entry.Entity.TenantId = currentTenantId;
+                    }
+                    else if (entry.Entity.TenantId != currentTenantId)
+                    {
+                        throw new InvalidOperationException($"Cross-tenant write rejected. Entity TenantId ({entry.Entity.TenantId}) does not match CurrentTenantId ({currentTenantId}).");
+                    }
+                }
+                else if (entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
+                {
+                    if (entry.Entity.TenantId != currentTenantId)
+                    {
+                        throw new InvalidOperationException($"Cross-tenant write rejected. Entity TenantId ({entry.Entity.TenantId}) does not match CurrentTenantId ({currentTenantId}).");
+                    }
                 }
             }
         }

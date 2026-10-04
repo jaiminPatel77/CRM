@@ -12,7 +12,7 @@ namespace Crm.Tests.Unit;
 public class TenantResolutionTests
 {
     [Fact]
-    public async Task InvokeAsync_ShouldSetTenant_WhenXTenantIdHeaderIsPresent()
+    public async Task InvokeAsync_ShouldIgnoreHeader_WhenHeaderIsPresent()
     {
         // Arrange
         var tenantGuid = Guid.NewGuid();
@@ -20,16 +20,15 @@ public class TenantResolutionTests
         httpContext.Request.Headers["X-Tenant-ID"] = tenantGuid.ToString();
 
         var tenantContext = Substitute.For<ITenantContext>();
-        var dbContext = Substitute.For<IApplicationDbContext>();
 
         RequestDelegate next = (ctx) => Task.CompletedTask;
         var middleware = new TenantResolutionMiddleware(next);
 
         // Act
-        await middleware.InvokeAsync(httpContext, tenantContext, dbContext);
+        await middleware.InvokeAsync(httpContext, tenantContext);
 
         // Assert
-        tenantContext.Received(1).SetTenant(tenantGuid, null);
+        tenantContext.DidNotReceive().SetTenant(Arg.Any<Guid>(), Arg.Any<string>());
     }
 
     [Fact]
@@ -43,13 +42,12 @@ public class TenantResolutionTests
         httpContext.User = new ClaimsPrincipal(identity);
 
         var tenantContext = Substitute.For<ITenantContext>();
-        var dbContext = Substitute.For<IApplicationDbContext>();
 
         RequestDelegate next = (ctx) => Task.CompletedTask;
         var middleware = new TenantResolutionMiddleware(next);
 
         // Act
-        await middleware.InvokeAsync(httpContext, tenantContext, dbContext);
+        await middleware.InvokeAsync(httpContext, tenantContext);
 
         // Assert
         tenantContext.Received(1).SetTenant(tenantGuid, null);
