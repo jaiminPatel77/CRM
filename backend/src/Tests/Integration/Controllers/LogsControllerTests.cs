@@ -13,7 +13,7 @@ namespace Crm.Tests.Integration.Controllers;
 public class TestApiResponse<T>
 {
     [System.Text.Json.Serialization.JsonPropertyName("data")]
-    public T Result { get; set; }
+    public T Result { get; set; } = default!;
     // Add other props if needed like IsError, Message, etc.
 }
 
